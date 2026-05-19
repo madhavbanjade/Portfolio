@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Madhav Banjade</title>
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,200;1,9..40,300&display=swap" rel="stylesheet">
+
+  <!-- All styles live in styles.css -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+<!-- ============================================================
+     NAVIGATION
+     Fixed top bar with logo, nav links, and CTA.
+     Links scroll to sections in the portfolio view.
+     ============================================================ -->
+<nav>
+  <div class="nav-inner">
+    <!-- Logo — clicking always returns to portfolio top -->
+    <a class="nav-logo" href="#" onclick="showPortfolio(); return false;">
+      <span class="nav-dot"></span>
+Madhav Banjade
+    </a>
+
+    <div class="nav-links">
+      <!-- These two links are hidden on mobile (class="hide-mobile") -->
+      <a href="#work"
+         class="hide-mobile"
+         onclick="showPortfolio(); setTimeout(() => document.getElementById('work').scrollIntoView({ behavior: 'smooth' }), 10); return false;">
+        Work
+      </a>
+      <a href="#about"
+         class="hide-mobile"
+         onclick="showPortfolio(); setTimeout(() => document.getElementById('about').scrollIntoView({ behavior: 'smooth' }), 10); return false;">
+        About
+      </a>
+      <!-- CV link -->
+      <a href="#"
+         class="hide-mobile"
+         onclick="showCV(); return false;">
+        Read.cv
+      </a>
+      <!-- CTA pill button -->
+      <a href="#contact"
+         class="nav-cta"
+         onclick="showPortfolio(); setTimeout(() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' }), 10); return false;">
+        Get in touch ↗
+      </a>
+    </div>
+  </div><!-- /nav-inner -->
+</nav>
+
+
+<!-- ============================================================
+     PORTFOLIO VIEW  (main page — shown by default)
+     ============================================================ -->
+<div id="portfolio-view">
+<main>
+
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+
+    <!-- Decorative radial glow (CSS only, pointer-events: none) -->
+    <div class="hero-glow"></div>
+
+    <!-- Two-column layout: text left, photo right -->
+    <div class="hero-grid">
+
+      <!-- LEFT: all text content -->
+      <div class="hero-text">
+
+        <div class="hero-label fade-up">
+          <span class="hero-label-dot"></span>
+          Available for Work · <span class="copyright-year">2026</span>
+        </div>
+
+        <h1 class="fade-up">Design meets<br>engineering.</h1>
+
+        <p class="hero-sub fade-up">
+        I’m Madhav Banjade — a Full‑Stack Developer from Kathmandu building scalable, modern web applications with Next.js, TypeScript, and Node.js.
+        </p>
+
+        <div class="hero-cta fade-up">
+          <a class="btn btn-primary"
+             href="#work"
+             onclick="setTimeout(() => document.getElementById('work').scrollIntoView({ behavior: 'smooth' }), 10); return false;">
+            View Selected Work
+          </a>
+          <a class="btn btn-ghost" href="https://mail.google.com/mail/?view=cm&to=madhavbnzd57@gmail.com" target="_blank">madhavbnzd57@gmail.com</a>
+        </div>
+
+
+      </div><!-- /hero-text -->
+
+      <!-- RIGHT: photo — replace src with your actual image path -->
+      <div class="hero-photo fade-up">
+        <img src="/public/me.JPG" alt="Madhav Banjade" />
+      </div>
+
+    </div><!-- /hero-grid -->
+
+  </section>
+
+
+  <!-- ── PROJECTS ── -->
+  <section id="work">
+    <div class="section-eyebrow fade-up">Selected Projects — 2023–2026</div>
+    <h2 class="fade-up"><strong>Recent</strong> work</h2>
+
+    <!-- Cards are rendered here by renderCards() in script.js -->
+    <div class="projects-grid" id="projects-grid"></div>
+
+  </section>
+
+
+  <hr class="divider">
+
+
+  <!-- ── ABOUT ── -->
+  <section id="about">
+    <div class="about-grid">
+
+      <!-- Left: text content -->
+      <div class="about-text">
+        <div class="section-eyebrow fade-up">About</div>
+        <h2 class="fade-up"><strong>Craft</strong> over<br>everything.</h2>
+
+        <p class="fade-up">I’m a Full‑Stack Developer based in Kathmandu, Nepal, focused on building modern, scalable, and user‑centered web products. I specialize in frontend development using Next.js and TypeScript, and I complement that with backend experience in Node.js (Express, NestJS), database work with MongoDB and PostgreSQL (Prisma), and deployment/version control using Git/GitHub. I enjoy turning complex requirements into performant, maintainable code and delivering polished user experiences.
+
+</p>
+
+     
+
+        <p class="fade-up">I have professional experience that includes a 6‑month internship and one year as a software developer, during which I contributed to production features, API integrations, and end‑to‑end deliveries. I’m comfortable with RESTful and GraphQL patterns, writing reliable data fetching logic, and collaborating with designers and product teams to ship high‑quality software.</p>
+
+        <!-- 2×2 stat boxes -->
+        <div class="about-stats fade-up">
+          <div class="stat">
+            <div class="stat-num">1+</div>
+            <div class="stat-label">Years experience</div>
+          </div>
+          <div class="stat" style="border-left: 1px solid var(--border)">
+            <div class="stat-num">2+</div>
+            <div class="stat-label">Professional Projects shipped</div>
+          </div>
+          <div class="stat" style="border-left: 1px solid var(--border)">
+            <div class="stat-num">9+</div>
+            <div class="stat-label">Personal Projects shipped</div>
+          </div>
+          
+        </div>
+      </div>
+
+      <!-- Right: sticky profile card -->
+      <div class="about-visual fade-up">
+        <div class="about-card">
+          <div class="about-card-img-wrap">
+            <img src="public/me.JPG" alt="Madhav Banjade" class="about-card-photo" />
+          </div>
+          <div class="about-card-info">
+            <div class="about-card-name">Madhav Banjade</div>
+            <div class="about-card-role">Software · Engineer · Kathmandu, Nepal</div>
+            <div class="about-skills">
+              <span class="skill-tag">Github</span>
+              <span class="skill-tag">Node.js</span>
+              <span class="skill-tag">Next.js</span>
+              <span class="skill-tag">TypeScript</span>
+              <span class="skill-tag">Express.js</span>
+              <span class="skill-tag">Postman</span>
+              <span class="skill-tag">MongoDB</span>
+              <span class="skill-tag">Prisma</span>
+              <span class="skill-tag">PostgreSQL</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <hr class="divider">
+
+
+  <!-- ── CONTACT ── -->
+  <section id="contact">
+    <div class="contact-inner fade-up">
+      <div class="section-eyebrow" style="margin-bottom: 20px">Let's build something</div>
+      <h2 style="margin-bottom: 16px"><strong>Start</strong> a project.</h2>
+      <p>Available for freelance, consulting, and full-time roles. Let's make something worth remembering.</p>
+      <div class="contact-links">
+        <a class="btn btn-primary" href="https://mail.google.com/mail/?view=cm&to=madhavbnzd57@gmail.com">madhavbnzd57@gmail.com ↗</a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/madhavbanjade/" target="_blank">LinkedIn</a>
+        <a class="btn btn-ghost" href="https://github.com/madhavbanjade" target="_blank">GitHub</a>
+      </div>
+    </div>
+  </section>
+
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span>© <span class="copyright-year">2026</span> Madhav Banjade</span>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/madhavbanjade/" target="_blank">LinkedIn</a>
+      <a href="https://www.instagram.com/devb.ychance/" target="_blank">Instagram</a>
+      <a href="#" onclick="showCV(); return false;">Read.cv</a>
+    </div>
+  </div>
+</footer>
+</div><!-- /portfolio-view -->
+
+
+<!-- Detail view — content is injected by showDetail() in script.js -->
+<div id="detail-view" style="display: none;"></div>
+
+
+<!-- ============================================================
+     CV VIEW  (iframe — shown by showCV())
+     ============================================================ -->
+<div id="cv-view" style="display: none;">
+  <iframe id="cv-frame" src="cv.html" title="Madhav Banjade — CV"></iframe>
+</div><!-- /cv-view -->
+
+
+<!-- All interactivity lives in script.js -->
+<script src="script.js"></script>
+
+</body>
+</html>

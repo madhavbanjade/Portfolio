@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Madhav Banjade — CV</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      background: #e8e8e8;
+      color: #111;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── TOOLBAR ── */
+    .toolbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 52px;
+      background: #0a0a0a;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      z-index: 10;
+    }
+
+    .toolbar-back {
+      font-size: 13px;
+      color: #a1a1a6;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+    .toolbar-back:hover { color: #f5f5f7; }
+
+    .toolbar-label {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #515154;
+    }
+
+    .toolbar-download {
+      font-size: 13px;
+      font-weight: 500;
+      color: #fff;
+      background: #05880e;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 980px;
+      cursor: pointer;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s, opacity 0.2s;
+    }
+    .toolbar-download:hover  { background: #06a810; }
+    .toolbar-download:disabled { opacity: 0.6; cursor: default; }
+
+    /* ── PAGE WRAP ── */
+    .page-wrap {
+      padding: 68px 24px 40px;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* White paper — fixed A4 proportions for html2pdf */
+    .page {
+      width: 100%;
+      max-width: 740px;
+      background: #fff;
+      padding: 32px 44px 28px;
+      box-shadow: 0 2px 32px rgba(0,0,0,0.14);
+    }
+
+    /* ── HEADER ── */
+    .hd-name {
+      font-size: 26px;
+      font-weight: 300;
+      letter-spacing: -0.03em;
+      color: #111;
+      margin-bottom: 3px;
+    }
+
+    .hd-title {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 12px;
+    }
+
+    .hd-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3px 20px;
+      font-size: 11.5px;
+      color: #666;
+      padding-bottom: 12px;
+      border-bottom: 1.5px solid #111;
+      margin-bottom: 18px;
+    }
+
+    .hd-meta a { color: #05880e; text-decoration: none; }
+
+    .dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #05880e;
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+
+    /* ── SECTIONS ── */
+    .section { margin-bottom: 16px; }
+
+    .section-title {
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: #05880e;
+      margin-bottom: 8px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #e8e8e8;
+    }
+
+    .about-p {
+      font-size: 12px;
+      line-height: 1.6;
+      color: #444;
+    }
+
+    /* ── ENTRIES ── */
+    .entry { margin-bottom: 10px; }
+    .entry:last-child { margin-bottom: 0; }
+
+    .entry-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 1px;
+    }
+
+    .entry-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #111;
+    }
+
+    .entry-date {
+      font-size: 11px;
+      color: #999;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .entry-sub {
+      font-size: 11px;
+      color: #05880e;
+      font-weight: 500;
+      margin-bottom: 3px;
+    }
+
+    .entry-desc {
+      font-size: 11.5px;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    /* ── SKILLS ── */
+    .skills-table { width: 100%; border-collapse: collapse; }
+    .skills-table tr { border-bottom: 1px solid #f2f2f2; }
+    .skills-table tr:last-child { border-bottom: none; }
+    .skills-table td { padding: 5px 0; font-size: 11.5px; vertical-align: top; }
+    .skills-cat  { width: 96px; font-weight: 600; color: #111; padding-right: 12px; white-space: nowrap; }
+    .skills-list { color: #555; line-height: 1.45; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 600px) {
+      .toolbar      { padding: 0 16px; }
+      .toolbar-label { display: none; }
+      .page         { padding: 24px 18px; }
+      .page-wrap    { padding: 64px 0 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <button class="toolbar-back"
+    onclick="(window.parent !== window && window.parent.showPortfolio) ? window.parent.showPortfolio() : history.back()">
+    ← Portfolio
+  </button>
+  <span class="toolbar-label">Curriculum Vitae</span>
+  <button class="toolbar-download" id="dl-btn" onclick="downloadPDF()">
+    ↓ Download PDF
+  </button>
+</div>
+
+<!-- DOCUMENT -->
+<div class="page-wrap">
+<div class="page" id="cv-doc">
+
+  <!-- HEADER -->
+  <div class="hd-name">Madhav Banjade</div>
+  <div class="hd-title">Frontend Engineer</div>
+  <div class="hd-meta">
+    <span><a href="mailto:madhavbnzd57@gmail.com">madhavbnzd57@gmail.com</a></span>
+    <span>Nepal</span>
+    <span><a href="https://www.linkedin.com/in/madhavbanjade/" target="_blank">LinkedIn</a></span>
+    <span><a href="https://github.com/madhavbanjade" target="_blank">GitHub</a></span>
+    <span><span class="dot"></span>Available for work</span>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="section">
+    <div class="section-title">About</div>
+    <p class="about-p">Frontend engineer with 1.5 years of professional experience — a 6-month internship and one year as a software developer. Skilled in React, Next.js, Nest.js, REST APIs, and GraphQL. Comfortable collaborating with design and product teams to deliver quality, production-ready software end-to-end.</p>
+  </div>
+
+  <!-- EXPERIENCE -->
+  <div class="section">
+    <div class="section-title">Experience</div>
+
+    <div class="entry">
+      <div class="entry-row">
+        <span class="entry-title">Software Developer</span>
+        <span class="entry-date">2024 – Present</span>
+      </div>
+      <p class="entry-desc">Built production features, API integrations, and end-to-end deliveries. Collaborated with design and product teams to ship performant, high-quality software.</p>
+    </div>
+
+    <div class="entry">
+      <div class="entry-row">
+        <span class="entry-title">Software Engineering Intern</span>
+        <span class="entry-date">2023 – 2024</span>
+      </div>
+      <p class="entry-desc">6-month frontend internship — built UI components, integrated REST APIs, and improved codebase quality under senior developer mentorship.</p>
+    </div>
+  </div>
+
+  <!-- PROJECTS -->
+  <div class="section">
+    <div class="section-title">Projects</div>
+
+    <div class="entry">
+      <div class="entry-row">
+        <span class="entry-title">HRN Nepal — Management System</span>
+        <span class="entry-date">2025 – On-Going</span>
+      </div>
+      <div class="entry-sub">Next.js · Nest.js · TypeScript · MongoDB · Redis · AWS</div>
+      <p class="entry-desc">Full-stack management platform for an educational consultancy — handles employee records, student tracking, attendance, AI CV generation, document verification, and Japan visa workflows. Reduced manual workload by 80%.</p>
+    </div>
+
+    <div class="entry">
+      <div class="entry-row">
+        <span class="entry-title">E-commerce Platform</span>
+        <span class="entry-date">2026</span>
+      </div>
+      <div class="entry-sub">Next.js · Nest.js · TypeScript · PostgreSQL · Prisma · TailwindCSS</div>
+      <p class="entry-desc">Fashion e-commerce with OAuth auth, product management, cart/wishlist, order tracking, and payment integration. Improved checkout completion rate by 72%.</p>
+    </div>
+
+    <div class="entry">
+      <div class="entry-row">
+        <span class="entry-title">Ghar-Jagga Nepal — Real Estate Platform</span>
+        <span class="entry-date">2025</span>
+      </div>
+      <div class="entry-sub">Express · React · MongoDB · Node.js</div>
+      <p class="entry-desc">Nepal property search with map-based filtering, agent dashboard, and listing management. 3× more listings than nearest competitor; 2,000+ active users in 3 months.</p>
+    </div>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="section">
+    <div class="section-title">Skills</div>
+    <table class="skills-table">
+      <tr>
+        <td class="skills-cat">Frontend</td>
+        <td class="skills-list">React, Next.js, TypeScript, TailwindCSS, Framer Motion, Redux, React Query</td>
+      </tr>
+      <tr>
+        <td class="skills-cat">Backend</td>
+        <td class="skills-list">Nest.js, Node.js, Express, REST API, GraphQL</td>
+      </tr>
+      <tr>
+        <td class="skills-cat">Database</td>
+        <td class="skills-list">MongoDB, PostgreSQL, Redis, Prisma ORM</td>
+      </tr>
+      <tr>
+        <td class="skills-cat">Tools</td>
+        <td class="skills-list">AWS, Docker, Git, Figma, React Query</td>
+      </tr>
+    </table>
+  </div>
+
+</div><!-- /page -->
+</div><!-- /page-wrap -->
+
+<!-- html2pdf for direct download (no print dialog) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+  function downloadPDF() {
+    const btn = document.getElementById('dl-btn');
+    btn.textContent = 'Generating…';
+    btn.disabled = true;
+
+    html2pdf()
+      .set({
+        margin:      [8, 10, 8, 10],
+        filename:    'Madhav_Banjade_CV.pdf',
+        image:       { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, logging: false },
+        jsPDF:       { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak:   { mode: 'avoid-all' }
+      })
+      .from(document.getElementById('cv-doc'))
+      .save()
+      .then(() => {
+        btn.textContent = '↓ Download PDF';
+        btn.disabled = false;
+      });
+  }
+</script>
+
+</body>
+</html>
