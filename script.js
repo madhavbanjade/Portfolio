@@ -9,7 +9,7 @@ const projects = [
   {
   id:       'hrn',
 
-  title:    'HRN Nepal',
+  title:    'HRN Nepal-System Dashboard',
 
   monogram: 'HRN',
 
@@ -135,7 +135,6 @@ const projects = [
     'React',
     'Express',
     'MongoDB',
-    'Node.js'
   ],
 
   desc:
