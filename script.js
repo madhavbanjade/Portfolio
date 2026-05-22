@@ -13,7 +13,7 @@ const projects = [
 
   monogram: 'HRN',
 
-  image:    '/file/hrn.png',
+  image:    'hrn.png',
 
   imgClass: 'img-1',
 
@@ -77,7 +77,7 @@ const projects = [
   id:       'ecommerce',
   title:    'E-commerce',
   monogram: 'EC',
-  image:    '/file/ecommerce.jpg',
+  image:    'ecommerce.jpg',
   imgClass: 'img-2',
 
   tags: ['Next.js', 'Nest.js', 'OAuth', 'PostgreSQL', 'Prisma'],
@@ -127,7 +127,7 @@ const projects = [
 
   monogram: 'GJ',
 
-  image:    'file/real-estate.jpg',
+  image:    'real-estate.jpg',
 
   imgClass: 'img-1',
 
