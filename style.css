@@ -401,6 +401,36 @@ h2 {
 
 h2 strong { font-weight: 600; }
 
+/* ── Category tab switcher (Professional / Personal) ── */
+.category-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.category-tab {
+  padding: 10px 22px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-2);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color .25s, background .25s, border-color .25s;
+}
+
+.category-tab:hover {
+  color: var(--text);
+  border-color: var(--border-hover);
+}
+
+.category-tab.active {
+  color: var(--accent);
+  background: var(--accent-dim);
+  border-color: transparent;
+}
+
 
 /* ============================================================
    PROJECT CARDS GRID
@@ -431,11 +461,8 @@ h2 strong { font-weight: 600; }
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6), 0 0 0 1px var(--border-hover), 0 0 48px rgba(5, 136, 14, 0.05);
 }
 
-/* Grid column spans — controls card width in the 12-col grid */
-.card-wide   { grid-column: span 7; }
-.card-narrow { grid-column: span 5; }
-.card-full   { grid-column: span 12; }
-.card-third  { grid-column: span 4; }
+/* Grid column span — every card is the same size */
+.card-uniform { grid-column: span 4; }
 
 /* Coloured image/preview area at top of card */
 .card-img {
@@ -451,11 +478,8 @@ h2 strong { font-weight: 600; }
   overflow: hidden;
 }
 
-/* Card image heights per layout variant */
-.card-wide   .card-img { height: 260px; }
-.card-narrow .card-img { height: 260px; }
-.card-full   .card-img { height: 200px; }
-.card-third  .card-img { height: 200px; }
+/* Card image height */
+.card-uniform .card-img { height: 200px; }
 
 /* Fade-to-surface gradient over card images */
 .card-img::after {
@@ -957,9 +981,7 @@ footer {
   .hero-scroll        { justify-content: center; }
 
   /* PROJECTS — all cards full width */
-  .card-wide,
-  .card-narrow,
-  .card-third         { grid-column: span 12; }
+  .card-uniform       { grid-column: span 12; }
 
   /* ABOUT — stack vertically, centre text */
   .about-grid         { grid-template-columns: 1fr; gap: 48px; }

@@ -9,6 +9,8 @@ const projects = [
   {
   id:       'hrn',
 
+  category: 'professional',
+
   title:    'HRN Nepal-System Dashboard',
 
   monogram: 'HRN',
@@ -27,8 +29,6 @@ const projects = [
     'A complete management system for an educational consultancy that sends students to Japan for work and study opportunities.',
 
   year: 'On-Going',
-
-  cardSize: 'card-wide',
 
   detail: {
     extraTags: [
@@ -75,6 +75,7 @@ const projects = [
 
 {
   id:       'ecommerce',
+  category: 'personal',
   title:    'E-commerce',
   monogram: 'EC',
   image:    'ecommerce.jpg',
@@ -85,8 +86,6 @@ const projects = [
   desc: 'A modern fashion e-commerce platform built for seamless shopping experiences and fast performance.',
 
   year: '2026',
-
-  cardSize: 'card-narrow',
 
   detail: {
     extraTags: [
@@ -123,6 +122,8 @@ const projects = [
  {
   id:       'ghar-jagga',
 
+  category: 'personal',
+
   title:    'Ghar-Jagga Nepal',
 
   monogram: 'GJ',
@@ -141,8 +142,6 @@ const projects = [
     'A modern real estate platform for Nepal that helps users buy, sell, and rent properties with an intuitive search experience.',
 
   year: '2025',
-
-  cardSize: 'card-wide',
 
   detail: {
     extraTags: [
@@ -185,7 +184,23 @@ const projects = [
 
 // ── PAGINATION CONFIG ──
 const PINNED_COUNT = 2;   // first N projects are always visible (no pagination)
-let   currentPage  = 1;
+
+// Which category tab is currently selected
+let activeCategory = 'professional';
+let currentPage     = 1;
+
+// ── CATEGORY TAB SWITCHING ──
+function switchCategory(category) {
+  if (category === activeCategory) return;
+  activeCategory = category;
+  currentPage    = 1;
+
+  document.querySelectorAll('.category-tab').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.category === category);
+  });
+
+  renderCards();
+}
 
 // Returns page size based on screen width
 function getPageSize() {
@@ -210,7 +225,7 @@ window.addEventListener('resize', () => {
 
 function buildCard(p) {
   return `
-    <a class="card ${p.cardSize} fade-up" href="#" onclick="showDetail('${p.id}'); return false;">
+    <a class="card card-uniform fade-up" href="#" onclick="showDetail('${p.id}'); return false;">
       <div class="card-img ${p.imgClass}">
         ${p.image
           ? `<img src="${p.image}" alt="${p.title}" class="card-img-photo" />`
@@ -234,52 +249,30 @@ function buildCard(p) {
 
 
 // ============================================================
-// SKELETON HTML  (shown while "loading" paginated cards)
-// ============================================================
-
-function buildSkeleton(count) {
-  return Array.from({ length: count }, () => `
-    <div class="card card-third skeleton">
-      <div class="skeleton-img"></div>
-      <div class="skeleton-body">
-        <div class="skeleton-line short"></div>
-        <div class="skeleton-line"></div>
-        <div class="skeleton-line medium"></div>
-        <div class="skeleton-line short"></div>
-      </div>
-    </div>
-  `).join('');
-}
-
-
-// ============================================================
 // RENDER CARDS
 // ============================================================
 
 function renderCards() {
   const grid = document.getElementById('projects-grid');
 
+  const categoryProjects = projects.filter(p => p.category === activeCategory);
+
   // ── 1. Pinned cards (always visible, no animation delay) ──
-  const pinnedHTML = projects
+  const pinnedHTML = categoryProjects
     .slice(0, PINNED_COUNT)
     .map(buildCard)
     .join('');
 
-  // ── 2. Skeleton placeholder for paginated section ──
-  const pageSize    = getPageSize();
   const skeletonHTML = `
     <div class="paginated-section" id="paginated-section">
-      <div class="projects-grid-inner" id="paginated-grid">
-        ${buildSkeleton(pageSize)}
-      </div>
+      <div class="projects-grid-inner" id="paginated-grid"></div>
       <div class="pagination" id="pagination"></div>
     </div>
   `;
 
   grid.innerHTML = pinnedHTML + skeletonHTML;
 
-  // Show skeleton briefly then render real page
-  setTimeout(() => renderPage(1), 600);
+  renderPage(1);
 }
 
 
@@ -289,7 +282,8 @@ function renderCards() {
 
 function renderPage(page) {
   const pageSize          = getPageSize();
-  const paginatedProjects = projects.slice(PINNED_COUNT); // everything after pinned
+  const categoryProjects  = projects.filter(p => p.category === activeCategory);
+  const paginatedProjects = categoryProjects.slice(PINNED_COUNT); // everything after pinned
   const totalPages        = Math.ceil(paginatedProjects.length / pageSize);
 
   currentPage = page;
@@ -299,26 +293,10 @@ function renderPage(page) {
 
   const paginatedGrid = document.getElementById('paginated-grid');
   const pagination    = document.getElementById('pagination');
+  if (!paginatedGrid || !pagination) return;
 
-  // ── Show skeleton first ──
-  paginatedGrid.style.opacity = '0';
-  paginatedGrid.innerHTML     = buildSkeleton(pageSize);
-  paginatedGrid.style.opacity = '1';
-
-  // ── Swap in real cards after short delay (simulates smooth load) ──
-  setTimeout(() => {
-    paginatedGrid.innerHTML = pageItems.map(buildCard).join('');
-    paginatedGrid.style.opacity = '0';
-
-    // Fade in smoothly
-    requestAnimationFrame(() => {
-      paginatedGrid.style.transition = 'opacity 0.35s ease';
-      paginatedGrid.style.opacity    = '1';
-    });
-
-    // Re-run fade-up observer for new cards
-    observeFadeUps();
-  }, 400);
+  paginatedGrid.innerHTML = pageItems.map(buildCard).join('');
+  observeFadeUps();
 
   // ── Build pagination controls ──
   if (totalPages <= 1) {
