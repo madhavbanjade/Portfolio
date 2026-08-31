@@ -1,7 +1,7 @@
 // ============================================================
 // PROJECT DATA
 // First 2 projects are always "pinned" (shown at top, no pagination).
-// Projects from index 2 onwards are paginated below.
+// Projects from index 2 onwards are paginated below. jk
 // ============================================================
 
 const projects = [
