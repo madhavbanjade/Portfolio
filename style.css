@@ -20,11 +20,9 @@
   --text-2:       #A1A1A6;
   --text-3:       #515154;
 
-  /* Accent (green) — plus a warmer second stop, used only in the
-     hero glow / scroll-progress signature moment, not scattered around */
+  /* Accent (green) */
   --accent:           #05880e;
   --accent-hover:     #06a810;
-  --accent-2:         #8ef000;
   --accent-dim:       rgba(5, 136, 14, 0.12);
   --accent-dim-hover: rgba(5, 136, 14, 0.2);
 
@@ -47,7 +45,10 @@
   --cursor-x: -100%;
   --cursor-y: -100%;
 
-  /* ── LAYOUT SYSTEM ── */
+  /* ── LAYOUT SYSTEM ──
+     Single source of truth for max-width and side padding.
+     Nav inner, main, and footer all use the same values so
+     left/right edges stay perfectly aligned at every breakpoint. */
   --max-width: 1080px;
   --side-pad:  clamp(16px, 5vw, 64px);
 }
@@ -65,42 +66,6 @@ body {
 }
 
 ::selection { background: var(--accent); color: #fff; }
-
-/* Custom scrollbar — matches the dark surface system instead of
-   the default browser chrome */
-::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb {
-  background: var(--surface-2);
-  border-radius: 980px;
-  border: 2px solid var(--bg);
-}
-::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
-html { scrollbar-color: var(--surface-2) var(--bg); scrollbar-width: thin; }
-
-/* Keyboard focus — visible, on-brand ring for anyone navigating
-   without a mouse. This was missing before. */
-a:focus-visible,
-button:focus-visible,
-.card:focus-visible,
-.skill-tag:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-  border-radius: 4px;
-}
-
-/* Respect reduced-motion preferences: kill decorative motion,
-   keep the page instantly usable */
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
-  }
-  .fade-up { opacity: 1; transform: none; }
-}
 
 
 /* ============================================================
@@ -132,31 +97,6 @@ body::after {
 
 
 /* ============================================================
-   SCROLL PROGRESS — the signature moment.
-   A hairline that fills left-to-right as the page is read,
-   sitting on the nav's bottom edge. Pure CSS via scroll-timeline
-   where supported; falls back to a static hairline elsewhere.
-   ============================================================ */
-.scroll-progress {
-  position: fixed;
-  top: 55px;
-  left: 0;
-  height: 1px;
-  width: 100%;
-  transform-origin: left center;
-  transform: scaleX(0);
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
-  z-index: 101;
-  animation: grow-progress linear;
-  animation-timeline: scroll(root);
-}
-
-@keyframes grow-progress {
-  to { transform: scaleX(1); }
-}
-
-
-/* ============================================================
    NAVIGATION
    ============================================================ */
 nav {
@@ -168,8 +108,10 @@ nav {
   -webkit-backdrop-filter: blur(24px) saturate(180%);
   border-bottom: 1px solid var(--border);
   height: 56px;
+  /* Nav spans full width — inner content is constrained by .nav-inner */
 }
 
+/* Inner wrapper — same max-width and padding as main and footer */
 .nav-inner {
   max-width: var(--max-width);
   margin: 0 auto;
@@ -191,6 +133,7 @@ nav {
   gap: 8px;
 }
 
+/* Pulsing dot next to logo */
 .nav-dot {
   width: 8px;
   height: 8px;
@@ -217,30 +160,11 @@ nav {
   text-decoration: none;
   transition: color .2s;
   letter-spacing: -.01em;
-  position: relative;
 }
 
 .nav-links a:hover { color: var(--text); }
 
-/* Underline sweep on hover instead of a flat color swap —
-   small, purposeful motion tied to the action itself */
-.nav-links a.hide-mobile::after {
-  content: '';
-  position: absolute;
-  left: 0; bottom: -4px;
-  width: 100%;
-  height: 1px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform .3s var(--transition);
-}
-
-.nav-links a.hide-mobile:hover::after {
-  transform: scaleX(1);
-  transform-origin: left;
-}
-
+/* "Get in touch" pill button in nav */
 .nav-cta {
   font-size: 13px;
   font-weight: 500;
@@ -256,9 +180,9 @@ nav {
 .nav-cta:hover {
   background: var(--accent-dim-hover);
   color: var(--accent-hover) !important;
-  box-shadow: 0 0 20px rgba(5, 136, 14, 0.25);
 }
 
+/* Slightly stronger backdrop when user has scrolled */
 nav.scrolled {
   background: rgba(0, 0, 0, 0.88);
   border-bottom-color: rgba(255, 255, 255, 0.1);
@@ -288,13 +212,15 @@ section { padding: 64px 0; }
   position: relative;
 }
 
+/* Two-column layout: text left, photo right */
 .hero-grid {
   display: grid;
-  grid-template-columns: 1fr 420px;
+  grid-template-columns: 1fr 420px; /* text takes remaining space, photo is fixed width */
   gap: 64px;
   align-items: center;
 }
 
+/* Right column — the photo */
 .hero-photo img {
   width: 100%;
   height: 520px;
@@ -302,31 +228,28 @@ section { padding: 64px 0; }
   border-radius: var(--radius);
   border: 1px solid var(--border);
   display: block;
-  transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s var(--transition);
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
 .hero-photo img:hover {
   border-color: var(--border-accent);
-  box-shadow: 0 0 48px rgba(5, 136, 14, 0.16);
-  transform: translateY(-4px);
+  box-shadow: 0 0 48px rgba(5, 136, 14, 0.12);
 }
 
-/* Layered mesh glow instead of a single flat radial — reads
-   richer without adding any new motion */
+/* Soft glow behind hero text */
 .hero-glow {
   position: absolute;
-  top: -160px;
+  top: -120px;
   left: 50%;
   transform: translateX(-50%);
-  width: 720px;
-  height: 640px;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(5, 136, 14, 0.07) 0%, transparent 70%);
   pointer-events: none;
-  background:
-    radial-gradient(circle at 30% 30%, rgba(5, 136, 14, 0.08) 0%, transparent 55%),
-    radial-gradient(circle at 70% 60%, rgba(142, 240, 0, 0.04) 0%, transparent 50%);
-  filter: blur(4px);
 }
 
+/* "Available for Work · 2026" pill */
 .hero-label {
   display: inline-flex;
   align-items: center;
@@ -355,15 +278,11 @@ h1 {
   font-weight: 200;
   letter-spacing: -.04em;
   line-height: 1.0;
-  /* Soft tonal gradient across the whole headline (not one accented
-     word) — gives it depth without breaking the type treatment */
-  background: linear-gradient(180deg, var(--text) 55%, var(--text-2) 130%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--text);
   margin-bottom: 28px;
 }
 
+/* Italic dimmed text inside h1 */
 h1 em {
   font-style: italic;
   font-weight: 200;
@@ -387,6 +306,7 @@ h1 em {
   align-items: center;
 }
 
+/* Small "Scroll to explore" indicator */
 .hero-scroll {
   margin-top: 44px;
   display: flex;
@@ -424,13 +344,14 @@ h1 em {
   font-weight: 500;
   font-family: var(--font);
   text-decoration: none;
-  transition: transform .2s var(--transition), box-shadow .25s var(--transition), background .25s, border-color .25s, color .25s;
+  transition: all .25s var(--transition);
   min-height: 48px;
   cursor: pointer;
   border: none;
   letter-spacing: -.01em;
 }
 
+/* Solid accent button */
 .btn-primary {
   background: var(--accent);
   color: #fff;
@@ -443,11 +364,7 @@ h1 em {
   transform: translateY(-1px);
 }
 
-/* Tactile press feedback — small but makes buttons feel real */
-.btn:active {
-  transform: translateY(0) scale(.97);
-}
-
+/* Outlined ghost button */
 .btn-ghost {
   background: var(--surface);
   color: var(--text-2);
@@ -484,6 +401,7 @@ h2 {
 
 h2 strong { font-weight: 600; }
 
+/* ── Category tab switcher (Professional / Personal) ── */
 .category-tabs {
   display: flex;
   gap: 28px;
@@ -506,7 +424,9 @@ h2 strong { font-weight: 600; }
   transition: color .25s var(--transition);
 }
 
-.category-tab:hover { color: var(--text-2); }
+.category-tab:hover {
+  color: var(--text-2);
+}
 
 .category-tab.active {
   color: var(--text);
@@ -523,6 +443,7 @@ h2 strong { font-weight: 600; }
   gap: 16px;
 }
 
+/* Base card styles */
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -534,17 +455,18 @@ h2 strong { font-weight: 600; }
   color: inherit;
   display: flex;
   flex-direction: column;
-  position: relative;
 }
 
 .card:hover {
   transform: translateY(-6px);
   border-color: var(--border-hover);
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6), 0 0 0 1px var(--border-hover), 0 0 48px rgba(5, 136, 14, 0.06);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6), 0 0 0 1px var(--border-hover), 0 0 48px rgba(5, 136, 14, 0.05);
 }
 
+/* Grid column span — every card is the same size */
 .card-uniform { grid-column: span 4; }
 
+/* Coloured image/preview area at top of card */
 .card-img {
   flex-shrink: 0;
   display: flex;
@@ -558,8 +480,10 @@ h2 strong { font-weight: 600; }
   overflow: hidden;
 }
 
+/* Card image height */
 .card-uniform .card-img { height: 200px; }
 
+/* Fade-to-surface gradient over card images */
 .card-img::after {
   content: '';
   position: absolute;
@@ -567,13 +491,15 @@ h2 strong { font-weight: 600; }
   background: linear-gradient(to bottom, transparent 50%, var(--surface) 100%);
 }
 
-.img-1 { background: linear-gradient(135deg, #0A1628 0%, #0D2847 100%); }
-.img-2 { background: linear-gradient(135deg, #0A1A12 0%, #0D3020 100%); }
-.img-3 { background: linear-gradient(135deg, #1A0A28 0%, #2D0D47 100%); }
-.img-4 { background: linear-gradient(135deg, #281A0A 0%, #472D0D 100%); }
-.img-5 { background: linear-gradient(135deg, #280A0A 0%, #470D0D 100%); }
-.img-6 { background: linear-gradient(135deg, #0A2828 0%, #0D4747 100%); }
+/* Per-project gradient backgrounds */
+.img-1 { background: linear-gradient(135deg, #0A1628 0%, #0D2847 100%); } /* blue   */
+.img-2 { background: linear-gradient(135deg, #0A1A12 0%, #0D3020 100%); } /* green  */
+.img-3 { background: linear-gradient(135deg, #1A0A28 0%, #2D0D47 100%); } /* purple */
+.img-4 { background: linear-gradient(135deg, #281A0A 0%, #472D0D 100%); } /* orange */
+.img-5 { background: linear-gradient(135deg, #280A0A 0%, #470D0D 100%); } /* red    */
+.img-6 { background: linear-gradient(135deg, #0A2828 0%, #0D4747 100%); } /* teal   */
 
+/* Large letter(s) watermark inside card image */
 .card-monogram {
   position: absolute;
   z-index: 1;
@@ -583,19 +509,18 @@ h2 strong { font-weight: 600; }
   opacity: .35;
 }
 
+/* Photo version — fills the entire card-img area */
 .card-img-photo {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover;   /* crops to fill, never stretches */
   object-position: center;
   z-index: 0;
-  transition: transform .5s var(--transition);
 }
 
-.card:hover .card-img-photo { transform: scale(1.05); }
-
+/* Card content area */
 .card-body {
   padding: 24px 28px 28px;
   flex: 1;
@@ -610,6 +535,7 @@ h2 strong { font-weight: 600; }
   margin-bottom: 16px;
 }
 
+/* Small pill tag (e.g. "React", "iOS") */
 .tag {
   font-size: 11px;
   font-weight: 500;
@@ -647,6 +573,7 @@ h2 strong { font-weight: 600; }
   padding-top: 16px;
 }
 
+/* "Case Study →" link — arrow slides on hover */
 .card-link {
   font-size: 13px;
   font-weight: 500;
@@ -693,6 +620,7 @@ h2 strong { font-weight: 600; }
 
 .about-text p strong { color: var(--text); font-weight: 500; }
 
+/* 2×2 stats grid */
 .about-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -703,13 +631,7 @@ h2 strong { font-weight: 600; }
   overflow: hidden;
 }
 
-.stat {
-  background: var(--surface);
-  padding: 24px;
-  transition: background .25s;
-}
-
-.stat:hover { background: var(--surface-2); }
+.stat { background: var(--surface); padding: 24px; }
 
 .stat-num {
   font-size: 36px;
@@ -721,6 +643,7 @@ h2 strong { font-weight: 600; }
 
 .stat-label { font-size: 13px; color: var(--text-3); }
 
+/* Right column sticks while scrolling */
 .about-visual {
   position: sticky;
   top: 88px;
@@ -731,18 +654,13 @@ h2 strong { font-weight: 600; }
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
-  transition: border-color .35s, box-shadow .35s;
 }
 
-.about-card:hover {
-  border-color: var(--border-hover);
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
-}
-
+/* About card avatar container */
 .about-card-img-wrap {
   position: relative;
   width: 100%;
-  height: 380px;
+  height: 380px;        /* tall enough to show upper body */
   overflow: hidden;
   border-radius: var(--radius) var(--radius) 0 0;
 }
@@ -752,16 +670,16 @@ h2 strong { font-weight: 600; }
   height: 100%;
   display: block;
   object-fit: cover;
-  object-position: top center;
-  filter: grayscale(12%);
-  transition: filter 0.4s ease, transform 0.5s var(--transition);
+  object-position: top center;  /* keeps face + upper body in frame */
+  filter: grayscale(12%);       /* very subtle desaturate for cohesion with dark UI */
+  transition: filter 0.4s ease;
 }
 
 .about-card:hover .about-card-photo {
-  filter: grayscale(0%);
-  transform: scale(1.03);
+  filter: grayscale(0%);        /* full colour on hover — nice reveal */
 }
 
+/* Black gradient fade at bottom — blends into card info */
 .about-card-img-wrap::after {
   content: '';
   position: absolute;
@@ -790,14 +708,13 @@ h2 strong { font-weight: 600; }
   border: 1px solid var(--border);
   padding: 6px 14px;
   border-radius: 980px;
-  transition: border-color 0.2s, color 0.2s, transform .2s;
+  transition: border-color 0.2s, color 0.2s;
   cursor: default;
 }
 
 .skill-tag:hover {
   border-color: var(--border-accent);
   color: var(--text);
-  transform: translateY(-1px);
 }
 
 
@@ -814,6 +731,7 @@ h2 strong { font-weight: 600; }
   overflow: hidden;
 }
 
+/* Glow behind contact section */
 .contact-inner::before {
   content: '';
   position: absolute;
@@ -837,6 +755,7 @@ h2 strong { font-weight: 600; }
   max-width: 420px;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 40px;
 }
 
 .contact-links {
@@ -856,6 +775,7 @@ footer {
   z-index: 1;
 }
 
+/* Same inner wrapper pattern as nav — aligns edges perfectly */
 .footer-inner {
   max-width: var(--max-width);
   margin: 0 auto;
@@ -881,6 +801,8 @@ footer {
 /* ============================================================
    CASE STUDY / DETAIL VIEW
    ============================================================ */
+
+/* Back button */
 .back-btn {
   display: inline-flex;
   align-items: center;
@@ -898,8 +820,9 @@ footer {
   margin-top: 88px;
 }
 
-.back-btn:hover { color: var(--text); border-color: var(--border-hover); transform: translateX(-2px); }
+.back-btn:hover { color: var(--text); border-color: var(--border-hover); }
 
+/* Hero card inside detail */
 .detail-hero {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -908,6 +831,7 @@ footer {
   margin-bottom: 20px;
 }
 
+/* Large decorative monogram area */
 .detail-featured {
   height: 360px;
   display: flex;
@@ -920,6 +844,7 @@ footer {
   position: relative;
 }
 
+/* Image version of the detail featured area */
 .detail-featured-img {
   position: absolute;
   inset: 0;
@@ -957,6 +882,7 @@ footer {
   margin-bottom: 36px;
 }
 
+/* 4-card info grid (Problem / Solution / Stack / Outcome) */
 .detail-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -968,10 +894,7 @@ footer {
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 28px;
-  transition: border-color .25s;
 }
-
-.detail-card:hover { border-color: var(--border-hover); }
 
 .detail-card h3 {
   font-size: 13px;
@@ -984,6 +907,7 @@ footer {
 
 .detail-card p { font-size: 15px; color: var(--text-2); line-height: 1.65; }
 
+/* Monospaced tech-stack pills */
 .stack-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
 
 .stack-tag {
@@ -997,6 +921,7 @@ footer {
   font-family: monospace;
 }
 
+/* Large accent number (e.g. "−40%") */
 .outcome-num {
   font-size: 28px;
   font-weight: 200;
@@ -1009,6 +934,8 @@ footer {
 
 /* ============================================================
    SCROLL FADE-UP ANIMATION
+   Elements start invisible/shifted and become visible when
+   they enter the viewport (class added via JS IntersectionObserver)
    ============================================================ */
 .fade-up {
   opacity: 0;
@@ -1021,10 +948,12 @@ footer {
   transform: none;
 }
 
+/* Stagger delays for sequential items */
 .fade-up:nth-child(2) { transition-delay: .1s; }
 .fade-up:nth-child(3) { transition-delay: .2s; }
 .fade-up:nth-child(4) { transition-delay: .3s; }
 
+/* Tighter stagger for cards (they animate quickly one after another) */
 .card.fade-up:nth-child(2) { transition-delay: .05s; }
 .card.fade-up:nth-child(3) { transition-delay: .10s; }
 .card.fade-up:nth-child(4) { transition-delay: .15s; }
@@ -1035,11 +964,16 @@ footer {
 /* ============================================================
    RESPONSIVE
    ============================================================ */
+
+/* ── Tablet (≤ 1024px) ── */
 @media (max-width: 1024px) {
   .hero-grid { grid-template-columns: 1fr 300px; gap: 40px; }
 }
 
+/* ── Small tablet (≤ 900px) ── */
 @media (max-width: 900px) {
+
+  /* HERO — hide photo, text full width, centre everything */
   .hero-grid          { grid-template-columns: 1fr; gap: 0; }
   .hero-photo         { display: none; }
   .hero               { padding-top: 80px; padding-bottom: 48px; text-align: center; }
@@ -1048,8 +982,10 @@ footer {
   .hero-cta           { justify-content: center; }
   .hero-scroll        { justify-content: center; }
 
+  /* PROJECTS — all cards full width */
   .card-uniform       { grid-column: span 12; }
 
+  /* ABOUT — stack vertically, centre text */
   .about-grid         { grid-template-columns: 1fr; gap: 48px; }
   .about-visual       { position: static; }
   .about-text         { text-align: center; }
@@ -1057,38 +993,53 @@ footer {
   .about-skills       { justify-content: center; }
   .about-stats        { max-width: 420px; margin-left: auto; margin-right: auto; }
 
+  /* CONTACT */
   .contact-inner      { padding: 48px 28px; }
 
+  /* FOOTER */
   .footer-inner       { flex-direction: column; gap: 16px; text-align: center; }
 }
 
+/* ── Mobile (≤ 600px) ── */
 @media (max-width: 600px) {
-  html, body { overflow-x: hidden; max-width: 100%; }
 
+   html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+
+  /* NAV */
   .nav-links .hide-mobile { display: none; }
 
+  /* HERO */
   .hero               { padding-top: 72px; padding-bottom: 40px; }
   .hero-sub           { font-size: 16px; }
   .hero-cta           { flex-direction: column; align-items: center; width: 100%; }
   .hero-cta .btn      { width: 100%; justify-content: center; }
 
+  /* SECTIONS */
   section             { padding: 48px 0; }
   h2                  { margin-bottom: 28px; text-align: center; }
   .section-eyebrow    { text-align: center; }
 
+  /* ABOUT */
   .about-stats        { grid-template-columns: 1fr 1fr; }
 
+  /* DETAIL */
   .detail-body        { padding: 24px 20px 32px; }
   .detail-featured    { height: 200px; font-size: 56px; }
   .detail-grid        { grid-template-columns: 1fr; }
 
+  /* PAGINATION */
   .pagination-inner   { gap: 6px; }
   .page-btn           { min-width: 34px; height: 34px; font-size: 12px; padding: 0 10px; }
 
+  /* CONTACT */
   .contact-links      { flex-direction: column; align-items: center; }
   .contact-links .btn { width: 100%; justify-content: center; max-width: 320px; }
 }
 
+/* ── Very small mobile (≤ 380px) ── */
 @media (max-width: 380px) {
   h1                  { font-size: 40px; }
   .about-stats        { grid-template-columns: 1fr; }
@@ -1097,12 +1048,15 @@ footer {
 
 /* ============================================================
    PAGINATED SECTION
+   Wraps the paginated cards grid + pagination controls.
+   Sits below the two pinned cards in the projects grid.
    ============================================================ */
 .paginated-section {
-  grid-column: span 12;
+  grid-column: span 12;   /* takes full width inside the 12-col grid */
   margin-top: 8px;
 }
 
+/* Inner grid for paginated cards — same gap as main grid */
 .projects-grid-inner {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -1110,6 +1064,7 @@ footer {
   transition: opacity 0.35s ease;
 }
 
+/* Paginated cards default to thirds — override per card if needed */
 .projects-grid-inner .card { grid-column: span 4; }
 
 @media (max-width: 900px) {
@@ -1119,12 +1074,17 @@ footer {
 
 /* ============================================================
    SKELETON CARDS
+   Shown while paginated cards are "loading" between pages.
+   Uses a shimmer animation to signal loading activity.
    ============================================================ */
+
+/* Shimmer keyframe — slides a highlight across the element */
 @keyframes shimmer {
   0%   { background-position: -600px 0; }
   100% { background-position:  600px 0; }
 }
 
+/* Shared shimmer style applied to all skeleton elements */
 .skeleton-shimmer {
   background: linear-gradient(
     90deg,
@@ -1137,6 +1097,7 @@ footer {
   border-radius: 8px;
 }
 
+/* Skeleton card — mimics a real card's shape */
 .card.skeleton {
   grid-column: span 4;
   cursor: default;
@@ -1145,6 +1106,7 @@ footer {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
+  /* Override hover transform so skeleton doesn't lift */
   transform: none !important;
   box-shadow: none !important;
 }
@@ -1153,6 +1115,7 @@ footer {
   .card.skeleton { grid-column: span 12; }
 }
 
+/* Skeleton image area */
 .skeleton-img {
   height: 200px;
   background: linear-gradient(
@@ -1165,6 +1128,7 @@ footer {
   animation: shimmer 1.4s infinite linear;
 }
 
+/* Skeleton text body */
 .skeleton-body {
   padding: 24px 28px 28px;
   display: flex;
@@ -1172,6 +1136,7 @@ footer {
   gap: 12px;
 }
 
+/* Skeleton text lines — different widths fake real text */
 .skeleton-line {
   height: 12px;
   border-radius: 6px;
@@ -1189,6 +1154,7 @@ footer {
 .skeleton-line.short  { width: 40%; }
 .skeleton-line.medium { width: 65%; }
 
+/* Stagger shimmer so lines don't all pulse in sync */
 .skeleton-line:nth-child(1) { animation-delay: 0s; }
 .skeleton-line:nth-child(2) { animation-delay: 0.1s; }
 .skeleton-line:nth-child(3) { animation-delay: 0.2s; }
@@ -1212,6 +1178,7 @@ footer {
   justify-content: center;
 }
 
+/* Base page button */
 .page-btn {
   display: inline-flex;
   align-items: center;
@@ -1236,6 +1203,7 @@ footer {
   transform: translateY(-1px);
 }
 
+/* Currently active page */
 .page-btn.active {
   background: var(--accent);
   border-color: var(--accent);
@@ -1243,6 +1211,7 @@ footer {
   cursor: default;
 }
 
+/* Prev/Next when no more pages */
 .page-btn.disabled {
   opacity: 0.3;
   cursor: not-allowed;
@@ -1257,7 +1226,7 @@ footer {
    CV VIEW  (iframe embed)
    ============================================================ */
 #cv-view {
-  padding-top: 56px;
+  padding-top: 56px; /* sit below the fixed nav */
 }
 
 #cv-frame {
@@ -1267,6 +1236,7 @@ footer {
   display: block;
 }
 
+/* Hide nav when printing so only the CV document prints */
 @media print {
   nav { display: none !important; }
   #cv-view { padding-top: 0; }
