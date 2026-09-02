@@ -74,6 +74,58 @@ const projects = [
 },
 
 {
+  id:       'tms',
+
+  category: 'professional',
+
+  title:    'Tailoring Management System',
+
+  monogram: 'TMS',
+
+  image:    '',
+
+  imgClass: 'img-2',
+
+  tags: [
+    'NestJS',
+    'MongoDB'
+  ],
+
+  desc:
+    'Backend architecture for a tailoring business MIS, including CRUD, authentication, and data models for orders, inventory, and customers.',
+
+  year: '2026',
+
+  detail: {
+    extraTags: [
+      'Node.js',
+      'REST API',
+      'JWT'
+    ],
+
+    longDesc:
+      'A management information system built for a tailoring business to digitize and streamline day-to-day operations. Designed and implemented the backend architecture using NestJS and MongoDB, covering authentication, CRUD operations, and structured data models for orders, inventory, and customer records to support the business\'s core workflows.',
+
+    liveLink: '#',
+
+    problem:
+      'The tailoring business relied on manual, paper-based tracking of orders, inventory, and customer information, making it difficult to manage stock, track order status, and maintain accurate records as the business grew.',
+
+    solution:
+      'Built a robust backend system with NestJS and MongoDB, featuring secure authentication, well-structured data models, and CRUD APIs for orders, inventory, and customers, giving the business a reliable foundation for managing operations digitally.',
+
+    stack: [
+      'NestJS',
+      'MongoDB',
+      'Node.js',
+      'TypeScript',
+      'REST API',
+      'JWT Authentication'
+    ],
+  },
+},
+
+{
   id:       'ecommerce',
   category: 'personal',
   title:    'E-commerce',
@@ -399,21 +451,8 @@ function showDetail(id) {
 function showPortfolio() {
   document.getElementById('portfolio-view').style.display = 'block';
   document.getElementById('detail-view').style.display   = 'none';
-  document.getElementById('cv-view').style.display       = 'none';
   window.scrollTo({ top: 0, behavior: 'instant' });
   setTimeout(observeFadeUps, 50);
-}
-
-
-// ============================================================
-// CV VIEW
-// ============================================================
-
-function showCV() {
-  document.getElementById('portfolio-view').style.display = 'none';
-  document.getElementById('detail-view').style.display   = 'none';
-  document.getElementById('cv-view').style.display       = 'block';
-  window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
 
