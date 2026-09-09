@@ -837,41 +837,7 @@ h2 strong { font-weight: 600; }
   overflow: hidden;
 }
 
-.about-card-img-wrap {
-  position: relative;
-  width: 100%;
-  height: 380px;
-  overflow: hidden;
-  border-radius: var(--radius) var(--radius) 0 0;
-}
-
-.about-card-photo {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-  object-position: top center;
-  filter: grayscale(12%);
-  transition: filter 0.4s ease;
-}
-
-.about-card:hover .about-card-photo { filter: grayscale(0%); }
-
-.about-card-img-wrap::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 50%;
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    rgba(0, 0, 0, 0.6) 65%,
-    rgba(0, 0, 0, 0.95) 100%
-  );
-  pointer-events: none;
-}
-
-.about-card-info   { padding: 24px 28px; }
+.about-card-info   { padding: 32px 28px; }
 .about-card-name   { font-size: 20px; font-weight: 500; letter-spacing: -.02em; margin-bottom: 4px; }
 .about-card-role   { font-size: 14px; color: var(--text-3); }
 
