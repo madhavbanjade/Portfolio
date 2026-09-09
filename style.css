@@ -18,17 +18,17 @@
   --text-2:       #58585C;
   --text-3:       #8A8A8E;
 
-  --accent:           #0A8A1C;
-  --accent-hover:     #067316;
-  --accent-dim:       rgba(10, 138, 28, 0.08);
-  --accent-dim-hover: rgba(10, 138, 28, 0.14);
+  --accent:           #111112;
+  --accent-hover:     #000000;
+  --accent-dim:       rgba(0, 0, 0, 0.05);
+  --accent-dim-hover: rgba(0, 0, 0, 0.09);
 
   --border:        rgba(0, 0, 0, 0.09);
   --border-hover:  rgba(0, 0, 0, 0.18);
-  --border-accent: rgba(10, 138, 28, 0.35);
+  --border-accent: rgba(0, 0, 0, 0.22);
 
-  --tag-bg:   rgba(10, 138, 28, 0.08);
-  --tag-text: #067316;
+  --tag-bg:   rgba(0, 0, 0, 0.05);
+  --tag-text: #111112;
 
   --radius:     20px;
   --radius-sm:  12px;
@@ -103,19 +103,6 @@ nav {
   display: flex;
   align-items: center;
   gap: 8px;
-}
-
-.nav-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--accent);
-  animation: pulse 2.5s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50%       { opacity: .5; transform: scale(.8); }
 }
 
 .nav-links {
@@ -267,16 +254,6 @@ h1 span {
   letter-spacing: .01em;
 }
 
-.status-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-dim);
-  flex-shrink: 0;
-  animation: pulse 2.5s ease-in-out infinite;
-}
-
 /* ── Hero photo column ── */
 .hero-photo {
   position: relative;
@@ -401,12 +378,12 @@ h1 span {
 .btn-primary {
   background: var(--accent);
   color: #fff;
-  box-shadow: 0 0 32px rgba(5, 136, 14, 0.25);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
 }
 
 .btn-primary:hover {
   background: var(--accent-hover);
-  box-shadow: 0 0 48px rgba(5, 136, 14, 0.4);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.26);
   transform: translateY(-1px);
 }
 
