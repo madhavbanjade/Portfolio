@@ -129,6 +129,7 @@ nav {
   padding: 0 var(--side-pad);
   height: 56px;
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
@@ -150,8 +151,18 @@ nav {
 
 .nav-links {
   display: flex;
-  gap: 32px;
+  flex-wrap: nowrap;
+  gap: 22px;
   align-items: center;
+}
+
+.nav-links a { white-space: nowrap; }
+
+.nav-right {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 18px;
 }
 
 .nav-links a {
@@ -236,7 +247,7 @@ nav.scrolled {
   z-index: 1;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 900px) {
 
   .nav-burger { display: flex; }
 
@@ -1229,13 +1240,10 @@ footer {
   .contact-split { grid-template-columns: 1fr; padding: 48px; }
 }
 
-/* ── Nav becomes a hamburger + dropdown ── */
-@media (max-width: 760px) {
-  .nav-inner { padding: 0 20px; }
-}
-
-/* ── Small tablet / large phone (≤ 900px) ── */
+/* ── Small tablet / large phone (≤ 900px) — nav becomes a hamburger here too ── */
 @media (max-width: 900px) {
+
+  .nav-inner          { padding: 0 20px; }
 
   .hero-grid          { grid-template-columns: 1fr; gap: 56px; }
   .hero               { padding-top: 88px; padding-bottom: 64px; text-align: center; }

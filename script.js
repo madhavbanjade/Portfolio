@@ -371,5 +371,5 @@ function closeMobileMenu() {
 
 // Close the mobile menu automatically if the viewport grows past the breakpoint
 window.addEventListener('resize', () => {
-  if (window.innerWidth > 760) closeMobileMenu();
+  if (window.innerWidth > 900) closeMobileMenu();
 });
