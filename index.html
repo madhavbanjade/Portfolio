@@ -31,16 +31,19 @@
   <nav>
     <div class="nav-inner">
 
-      <a class="nav-logo" href="#" onclick="showPortfolio(); return false;">
+      <a class="nav-logo" href="#" onclick="showPortfolio(); closeMobileMenu(); return false;">
         Madhav Banjade
       </a>
 
-      <div class="nav-links">
-        <a href="#work" class="hide-mobile" onclick="showPortfolio(); setTimeout(() => { document.getElementById('work').scrollIntoView({behavior:'smooth'}); }, 10); return false;">Work</a>
-        <a href="#process" class="hide-mobile" onclick="showPortfolio(); setTimeout(() => { document.getElementById('process').scrollIntoView({behavior:'smooth'}); }, 10); return false;">Process</a>
-        <a href="#about" class="hide-mobile" onclick="showPortfolio(); setTimeout(() => { document.getElementById('about').scrollIntoView({behavior:'smooth'}); }, 10); return false;">About</a>
-        <a href="My.CV.pdf" class="hide-mobile" target="_blank" rel="noopener noreferrer">Read.cv</a>
-        <a href="#contact" class="nav-cta" onclick="showPortfolio(); setTimeout(() => { document.getElementById('contact').scrollIntoView({behavior:'smooth'}); }, 10); return false;">Get in touch ↗</a>
+      <div class="nav-links" id="navLinks">
+        <a href="#work" onclick="showPortfolio(); closeMobileMenu(); setTimeout(() => { document.getElementById('work').scrollIntoView({behavior:'smooth'}); }, 10); return false;">Work</a>
+        <a href="#process" onclick="showPortfolio(); closeMobileMenu(); setTimeout(() => { document.getElementById('process').scrollIntoView({behavior:'smooth'}); }, 10); return false;">Process</a>
+        <a href="#about" onclick="showPortfolio(); closeMobileMenu(); setTimeout(() => { document.getElementById('about').scrollIntoView({behavior:'smooth'}); }, 10); return false;">About</a>
+        <a href="My.CV.pdf" target="_blank" rel="noopener noreferrer" onclick="closeMobileMenu();">Read.cv</a>
+        <a href="#contact" class="nav-cta" onclick="showPortfolio(); closeMobileMenu(); setTimeout(() => { document.getElementById('contact').scrollIntoView({behavior:'smooth'}); }, 10); return false;">Get in touch ↗</a>
+      </div>
+
+      <div class="nav-actions">
 
         <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle light and dark theme">
           <svg class="icon-sun" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -51,8 +54,18 @@
             <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
           </svg>
         </button>
+
+        <button class="nav-burger" id="navBurger" onclick="toggleMobileMenu()" aria-label="Toggle menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
       </div>
+
     </div>
+
+    <div class="nav-backdrop" id="navBackdrop" onclick="closeMobileMenu()"></div>
   </nav>
 
   <div id="portfolio-view">
@@ -376,5 +389,5 @@
 
   <script src="script.js"></script>
 
-<!-- </body>-->
+</body>
 </html>

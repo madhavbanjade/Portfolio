@@ -339,3 +339,37 @@ function toggleTheme() {
 window.addEventListener('scroll', () => {
   document.querySelector('nav').classList.toggle('scrolled', window.scrollY > 10);
 });
+
+
+// ============================================================
+// MOBILE NAV (hamburger + dropdown)
+// ============================================================
+function toggleMobileMenu() {
+  const links    = document.getElementById('navLinks');
+  const burger   = document.getElementById('navBurger');
+  const backdrop = document.getElementById('navBackdrop');
+  const isOpen   = links.classList.toggle('open');
+
+  burger.classList.toggle('open', isOpen);
+  backdrop.classList.toggle('open', isOpen);
+  burger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  document.body.style.overflow = isOpen ? 'hidden' : '';
+}
+
+function closeMobileMenu() {
+  const links    = document.getElementById('navLinks');
+  const burger   = document.getElementById('navBurger');
+  const backdrop = document.getElementById('navBackdrop');
+  if (!links || !links.classList.contains('open')) return;
+
+  links.classList.remove('open');
+  burger.classList.remove('open');
+  backdrop.classList.remove('open');
+  burger.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+}
+
+// Close the mobile menu automatically if the viewport grows past the breakpoint
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 760) closeMobileMenu();
+});
