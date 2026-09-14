@@ -1,5 +1,5 @@
 // ============================================================
-// PROJECT DATA
+// PROJECT DATA qfwqfefe
 // First 2 projects are always "pinned" (shown at top, no pagination).
 // Projects from index 2 onwards are paginated below.
 // ============================================================
@@ -310,8 +310,8 @@ function observeFadeUps() {
 }
 
 
-// ============================================================
-// INIT
+// ===== =======================================================
+// INIT ajvewvuwye igfi iufwwe
 // ============================================================
 document.querySelectorAll('.copyright-year').forEach(el => {
   el.textContent = new Date().getFullYear();
