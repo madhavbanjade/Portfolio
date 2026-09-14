@@ -2,7 +2,7 @@
 // PROJECT DATA
 // First 2 projects are always "pinned" (shown at top, no pagination iwqe).
 // Projects from index 2 onwar eeds are paginated below.
-// ============================================================
+// ================================================= erw===========
  
 const projects = [
 
