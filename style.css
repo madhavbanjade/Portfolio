@@ -84,6 +84,25 @@ body, .card, .about-box, .contact-split, .hero-meta-card, .whatido-card,
 
 html { scroll-behavior: smooth; }
 
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 0%;
+  background: var(--accent);
+  z-index: 200;
+  transition: width .12s linear;
+}
+
 body {
   background: var(--bg);
   color: var(--text);
@@ -200,9 +219,14 @@ nav {
   flex-shrink: 0;
 }
 
+nav {
+  transition: background-color .35s ease, border-color .35s ease, box-shadow .35s ease;
+}
+
 nav.scrolled {
   background: var(--glass-strong);
   border-bottom-color: var(--border-hover);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
 
 
@@ -318,16 +342,26 @@ nav.scrolled {
   color: var(--accent);
 }
 
+.theme-toggle {
+  position: relative;
+  transition: border-color .2s, color .2s, transform .2s var(--transition);
+}
+
+.theme-toggle:active { transform: scale(.9); }
+
 .theme-toggle svg {
   width: 17px;
   height: 17px;
+  position: absolute;
+  top: 50%; left: 50%;
+  transition: opacity .35s var(--transition), transform .5s var(--transition);
 }
 
-.theme-toggle .icon-moon { display: block; }
-.theme-toggle .icon-sun  { display: none; }
+.theme-toggle .icon-moon { opacity: 1; transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+.theme-toggle .icon-sun  { opacity: 0; transform: translate(-50%, -50%) rotate(-90deg) scale(.4); }
 
-html[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
-html[data-theme="dark"] .theme-toggle .icon-sun  { display: block; }
+html[data-theme="dark"] .theme-toggle .icon-moon { opacity: 0; transform: translate(-50%, -50%) rotate(90deg) scale(.4); }
+html[data-theme="dark"] .theme-toggle .icon-sun  { opacity: 1; transform: translate(-50%, -50%) rotate(0deg) scale(1); }
 
 
 /* ============================================================
@@ -442,13 +476,15 @@ h1 span {
 /* ── Hero photo column ── */
 .hero-photo {
   position: relative;
+  perspective: 1000px;
 }
 
 .hero-photo-frame {
   border-radius: var(--radius);
   border: 1px solid var(--border);
   overflow: hidden;
-  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+  transition: transform .4s var(--transition), border-color 0.4s ease, box-shadow 0.4s ease;
+  will-change: transform;
 }
 
 .hero-photo-frame img {
@@ -571,6 +607,8 @@ h1 span {
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.26);
   transform: translateY(-1px);
 }
+
+.btn:active { transform: scale(.96); }
 
 .btn-ghost {
   background: var(--surface);
@@ -722,7 +760,10 @@ h2 strong { font-weight: 600; }
   object-fit: cover;
   object-position: center;
   z-index: 0;
+  transition: transform .6s var(--transition);
 }
+
+.card:hover .card-img-photo { transform: scale(1.06); }
 
 .card-body {
   padding: 24px 28px 28px;
@@ -887,12 +928,28 @@ h2 strong { font-weight: 600; }
   height: 1px;
   background: var(--border);
   z-index: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1s var(--transition) .25s;
 }
+
+.fade-up.visible .process-line { transform: scaleX(1); }
 
 .process-step {
   position: relative;
   z-index: 1;
+  opacity: 0;
+  transform: translateY(16px) scale(.96);
+  transition: opacity .6s var(--transition), transform .6s var(--transition);
 }
+
+.fade-up.visible .process-step { opacity: 1; transform: none; }
+
+.process-step:nth-child(2) { transition-delay: .35s; }
+.process-step:nth-child(3) { transition-delay: .5s; }
+.process-step:nth-child(4) { transition-delay: .65s; }
+.process-step:nth-child(5) { transition-delay: .8s; }
+.process-step:nth-child(6) { transition-delay: .95s; }
 
 .process-num {
   width: 32px;
@@ -963,6 +1020,7 @@ h2 strong { font-weight: 600; }
   letter-spacing: -.04em;
   color: var(--text);
   margin-bottom: 4px;
+  font-variant-numeric: tabular-nums;
 }
 
 .stat-label { font-size: 13px; color: var(--text-3); }
@@ -984,6 +1042,15 @@ h2 strong { font-weight: 600; }
 .skill-tag:hover {
   border-color: var(--border-accent);
   color: var(--text);
+  transform: translateY(-2px);
+}
+
+.skill-tag.fade-up {
+  transition: opacity .5s var(--transition), transform .5s var(--transition);
+}
+
+.skill-tag.fade-up:hover {
+  transition: opacity .5s var(--transition), transform .2s var(--transition), border-color .2s, color .2s;
 }
 
 

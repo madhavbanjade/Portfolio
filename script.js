@@ -307,12 +307,79 @@ document.querySelectorAll('.copyright-year').forEach(el => {
 });
 
 renderCards();
+initSkillTagStagger();
 observeFadeUps();
+initStatCounters();
+initHeroTilt();
 
 document.addEventListener('mousemove', e => {
   document.documentElement.style.setProperty('--cursor-x', e.clientX + 'px');
   document.documentElement.style.setProperty('--cursor-y', e.clientY + 'px');
 });
+
+// ============================================================
+// SKILL TAG STAGGERED REVEAL
+// ============================================================
+function initSkillTagStagger() {
+  document.querySelectorAll('.about-skills .skill-tag').forEach((el, i) => {
+    el.classList.add('fade-up');
+    el.style.transitionDelay = `${i * 0.04}s`;
+  });
+}
+
+// ============================================================
+// ANIMATED STAT COUNTERS
+// ============================================================
+function animateCount(el, target, suffix) {
+  const duration = 1200;
+  const start = performance.now();
+  function tick(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.round(eased * target) + suffix;
+    if (progress < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+function initStatCounters() {
+  const statsEl = document.querySelector('.about-stats');
+  if (!statsEl || !('IntersectionObserver' in window)) return;
+
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      statsEl.querySelectorAll('.stat-num[data-count]').forEach(el => {
+        animateCount(el, parseInt(el.dataset.count, 10), el.dataset.suffix || '');
+      });
+      obs.disconnect();
+    });
+  }, { threshold: 0.4 });
+
+  observer.observe(statsEl);
+}
+
+// ============================================================
+// HERO PHOTO 3D TILT
+// ============================================================
+function initHeroTilt() {
+  const wrap  = document.querySelector('.hero-photo');
+  const frame = document.querySelector('.hero-photo-frame');
+  if (!wrap || !frame) return;
+  if (!window.matchMedia('(pointer: fine)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  wrap.addEventListener('mousemove', e => {
+    const rect = wrap.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    frame.style.transform = `rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
+  });
+
+  wrap.addEventListener('mouseleave', () => {
+    frame.style.transform = '';
+  });
+}
 
 // ============================================================
 // THEME TOGGLE
@@ -325,8 +392,15 @@ function toggleTheme() {
   localStorage.setItem('theme', next);
 }
 
+const scrollProgressEl = document.getElementById('scrollProgress');
 window.addEventListener('scroll', () => {
   document.querySelector('nav').classList.toggle('scrolled', window.scrollY > 10);
+
+  if (scrollProgressEl) {
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress  = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
+    scrollProgressEl.style.width = progress + '%';
+  }
 });
 
 
