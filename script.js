@@ -1,7 +1,6 @@
 // ============================================================
 // PROJECT DATA
-// First 2 projects are always "pinned" (shown at top, no pagination iwqe).
-// Projects from index 2 onwar eeds are paginated below.
+// Listed oldest → newest; the slider shows the latest first.
 // ================================================= erw===========
  
 const projects = [
@@ -25,26 +24,6 @@ const projects = [
       problem: 'The company was managing students, employee records, attendance, and visa processing manually through spreadsheets and disconnected systems, which caused delays, data inconsistency, and inefficient workflow management.',
       solution: 'Developed a centralized digital platform with role-based dashboards, automated student tracking, AI-assisted CV generation, attendance management, secure authentication, rate limiting, and real-time data handling. The platform significantly reduced manual operations and improved workflow coordination between departments.',
       stack: ['Next.js', 'Nest.js', 'TypeScript', 'MongoDB', 'Redis', 'React Query', 'TailwindCSS', 'AWS', 'AI Integration'],
-    },
-  },
-
-  {
-    id:       'tms',
-    category: 'professional',
-    title:    'Tailoring Management System',
-    monogram: 'TMS',
-    image:    '',
-    imgClass: 'img-2',
-    tags: ['NestJS', 'MongoDB'],
-    desc: 'Backend architecture for a tailoring business MIS, including CRUD, authentication, and data models for orders, inventory, and customers.',
-    year: '2026',
-    detail: {
-      extraTags: ['Node.js', 'REST API', 'JWT'],
-      longDesc: 'A management information system built for a tailoring business to digitize and streamline day-to-day operations. Designed and implemented the backend architecture using NestJS and MongoDB, covering authentication, CRUD operations, and structured data models for orders, inventory, and customer records to support the business\'s core workflows.',
-      liveLink: '#',
-      problem: 'The tailoring business relied on manual, paper-based tracking of orders, inventory, and customer information, making it difficult to manage stock, track order status, and maintain accurate records as the business grew.',
-      solution: 'Built a robust backend system with NestJS and MongoDB, featuring secure authentication, well-structured data models, and CRUD APIs for orders, inventory, and customers, giving the business a reliable foundation for managing operations digitally.',
-      stack: ['NestJS', 'MongoDB', 'Node.js', 'TypeScript', 'REST API', 'JWT Authentication'],
     },
   },
 
@@ -88,20 +67,56 @@ const projects = [
       solution: 'Built a centralized real estate platform with advanced filtering, location-based property browsing, secure authentication, image management, and dedicated dashboards for agents and property owners to manage listings efficiently.',
       stack: ['React', 'Express.js', 'MongoDB', 'Node.js', 'TailwindCSS', 'JWT Authentication', 'Cloudinary', 'REST API'],
     },
+  },
+
+  {
+    id:       'notify-platform',
+    category: 'personal',
+    title:    'Notify Platform(Distributed-System)',
+    monogram: 'NP',
+    image:    '',
+    imgClass: 'img-2',
+    tags: ['Next.js', 'NestJS', 'PostgreSQL', 'Redis'],
+    desc: 'A real-time notification platform with queued delivery, automatic retries, and live updates over WebSockets.',
+    year: '2026',
+    detail: {
+      extraTags: ['Prisma', 'BullMQ', 'Socket.IO', 'Nginx', 'Docker', 'Zustand', 'React Query', 'TailwindCSS'],
+      longDesc: 'A full-stack notification system where users send and receive notifications in real time. The NestJS API stores notifications in PostgreSQL through Prisma and hands delivery to a BullMQ job queue backed by Redis, with exponential-backoff retries and a tracked history of every delivery attempt. Live updates are pushed to the Next.js client over Socket.IO, and users can control what they receive through per-category preferences and quiet hours. The API can run as multiple instances behind Nginx, using the Socket.IO Redis adapter to keep events in sync across them.',
+      liveLink: 'https://fanout.netlify.app/',
+      demoVideo: 'fanout.mp4',
+      problem: 'Sending notifications directly inside a request is fragile: a failed delivery is silently lost, a slow one blocks the API, and users have no control over what reaches them or when.',
+      solution: 'Separated notification creation from delivery. Each notification is queued as an idempotent BullMQ job with up to 5 attempts and exponential backoff, every attempt is logged, and the client receives updates in real time over WebSockets. Redis-backed Socket.IO and an Nginx load balancer allow the API to scale horizontally, while JWT authentication and per-user preferences keep delivery secure and relevant.',
+      stack: ['Next.js', 'NestJS', 'TypeScript', 'PostgreSQL', 'Prisma', 'Redis', 'BullMQ', 'Socket.IO', 'Nginx', 'Docker', 'JWT Authentication'],
+    },
+  },
+
+  {
+    id:       'raag',
+    category: 'personal',
+    title:    'Raag — DocuMind RAG',
+    monogram: 'RG',
+    image:    '',
+    imgClass: 'img-1',
+    tags: ['NestJS', 'MongoDB', 'Qdrant', 'AI'],
+    desc: 'A retrieval-augmented generation app that lets you upload documents and ask questions answered only from their content.',
+    year: '2026',
+    detail: {
+      extraTags: ['Groq', 'Jina', 'Vector Search', 'JWT', 'Render', 'Node.js'],
+      longDesc: 'DocuMind is a document Q&A application built on a retrieval-augmented generation pipeline. Users upload PDF, Word, and Excel files, which are parsed, split into overlapping chunks, embedded, and stored in a Qdrant vector database. When a question is asked, the most relevant chunks are retrieved and re-ranked with Jina, then passed to an LLM on Groq that answers strictly from that context and returns the source chunks it used. Includes JWT authentication, chat conversation history, and a lightweight vanilla JavaScript frontend.',
+      liveLink: 'https://documindra.netlify.app/',
+      problem: 'Finding answers inside long PDFs, spreadsheets, and reports means manually searching through them, and general-purpose chatbots often invent answers that are not in the source material.',
+      solution: 'Built an end-to-end RAG pipeline: document parsing, overlapping chunking, vector embeddings, semantic search in Qdrant, and re-ranking before generation. The model is instructed to answer only from retrieved context and to say so when nothing relevant is found, and each answer returns its source references. Deployed as a NestJS API on Render.',
+      stack: ['NestJS', 'TypeScript', 'MongoDB', 'Qdrant', 'Groq', 'Jina Reranker', 'JWT Authentication', 'Render'],
+    },
   }
 
 ];
 
-// ── PAGINATION CONFIG ──
-const PINNED_COUNT = 2;
-
 let activeCategory = 'professional';
-let currentPage     = 1;
 
 function switchCategory(category) {
   if (category === activeCategory) return;
   activeCategory = category;
-  currentPage    = 1;
 
   document.querySelectorAll('.category-tab').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.category === category);
@@ -110,27 +125,13 @@ function switchCategory(category) {
   renderCards();
 }
 
-function getPageSize() {
-  return window.innerWidth <= 600 ? 1 : 3;
-}
-
-let _lastPageSize = getPageSize();
-window.addEventListener('resize', () => {
-  const newSize = getPageSize();
-  if (newSize !== _lastPageSize) {
-    _lastPageSize = newSize;
-    currentPage   = 1;
-    renderPage(1);
-  }
-});
-
 
 // ============================================================
 // CARD HTML BUILDER
 // ============================================================
 function buildCard(p) {
   return `
-    <a class="card card-uniform fade-up" href="#" onclick="showDetail('${p.id}'); return false;">
+    <a class="card card-uniform" href="#" onclick="showDetail('${p.id}'); return false;">
       <div class="card-img ${p.imgClass}">
         ${p.image
           ? `<img src="${p.image}" alt="${p.title}" class="card-img-photo" />`
@@ -154,87 +155,58 @@ function buildCard(p) {
 
 
 // ============================================================
-// RENDER CARDS
+// RENDER CARDS — single-row slider, latest project first
 // ============================================================
 function renderCards() {
   const grid = document.getElementById('projects-grid');
 
-  const categoryProjects = projects.filter(p => p.category === activeCategory);
+  // projects are listed oldest → newest, so reverse to show the latest first
+  const categoryProjects = projects
+    .filter(p => p.category === activeCategory)
+    .reverse();
 
-  const pinnedHTML = categoryProjects
-    .slice(0, PINNED_COUNT)
-    .map(buildCard)
-    .join('');
-
-  const skeletonHTML = `
-    <div class="paginated-section" id="paginated-section">
-      <div class="projects-grid-inner" id="paginated-grid"></div>
-      <div class="pagination" id="pagination"></div>
+  grid.innerHTML = `
+    <div class="slider">
+      <div class="slider-track" id="slider-track">
+        ${categoryProjects.map(buildCard).join('')}
+      </div>
+      <div class="slider-controls" id="slider-controls">
+        <button class="page-btn" id="slider-prev" onclick="slideProjects(-1)" aria-label="Previous projects">← Prev</button>
+        <button class="page-btn" id="slider-next" onclick="slideProjects(1)" aria-label="Next projects">Next →</button>
+      </div>
     </div>
   `;
 
-  grid.innerHTML = pinnedHTML + skeletonHTML;
-
-  renderPage(1);
+  const track = document.getElementById('slider-track');
+  track.addEventListener('scroll', updateSliderControls, { passive: true });
+  updateSliderControls();
 }
 
-
-// ============================================================
-// RENDER PAGE
-// ============================================================
-function renderPage(page) {
-  const pageSize          = getPageSize();
-  const categoryProjects  = projects.filter(p => p.category === activeCategory);
-  const paginatedProjects = categoryProjects.slice(PINNED_COUNT);
-  const totalPages        = Math.ceil(paginatedProjects.length / pageSize);
-
-  currentPage = page;
-
-  const start     = (page - 1) * pageSize;
-  const pageItems = paginatedProjects.slice(start, start + pageSize);
-
-  const paginatedGrid = document.getElementById('paginated-grid');
-  const pagination    = document.getElementById('pagination');
-  if (!paginatedGrid || !pagination) return;
-
-  paginatedGrid.innerHTML = pageItems.map(buildCard).join('');
-  observeFadeUps();
-
-  if (totalPages <= 1) {
-    pagination.innerHTML = '';
-    return;
-  }
-
-  let paginationHTML = '<div class="pagination-inner">';
-
-  paginationHTML += `
-    <button class="page-btn ${page === 1 ? 'disabled' : ''}"
-            onclick="renderPage(${page - 1})"
-            ${page === 1 ? 'disabled' : ''}>
-      ← Prev
-    </button>
-  `;
-
-  for (let i = 1; i <= totalPages; i++) {
-    paginationHTML += `
-      <button class="page-btn page-num ${i === page ? 'active' : ''}"
-              onclick="renderPage(${i})">
-        ${i}
-      </button>
-    `;
-  }
-
-  paginationHTML += `
-    <button class="page-btn ${page === totalPages ? 'disabled' : ''}"
-            onclick="renderPage(${page + 1})"
-            ${page === totalPages ? 'disabled' : ''}>
-      Next →
-    </button>
-  `;
-
-  paginationHTML += '</div>';
-  pagination.innerHTML = paginationHTML;
+function slideProjects(direction) {
+  const track = document.getElementById('slider-track');
+  if (!track) return;
+  const card = track.querySelector('.card');
+  if (!card) return;
+  const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+  track.scrollBy({ left: direction * (card.offsetWidth + gap), behavior: 'smooth' });
 }
+
+function updateSliderControls() {
+  const track    = document.getElementById('slider-track');
+  const controls = document.getElementById('slider-controls');
+  const prev     = document.getElementById('slider-prev');
+  const next     = document.getElementById('slider-next');
+  if (!track || !prev || !next) return;
+
+  const maxScroll = track.scrollWidth - track.clientWidth;
+  controls.style.display = maxScroll <= 2 ? 'none' : 'flex';
+  prev.disabled = track.scrollLeft <= 2;
+  next.disabled = track.scrollLeft >= maxScroll - 2;
+  prev.classList.toggle('disabled', prev.disabled);
+  next.classList.toggle('disabled', next.disabled);
+}
+
+window.addEventListener('resize', updateSliderControls);
 
 
 // ============================================================
@@ -261,9 +233,17 @@ function showDetail(id) {
           <div class="detail-meta">${allTags}</div>
           <div class="detail-title">${project.title}</div>
           <p class="detail-desc">${d.longDesc}</p>
-          <a class="btn btn-primary" href="${d.liveLink}" target="_blank">View Live Project ↗</a>
+          <div class="detail-actions">
+            <a class="btn btn-primary" href="${d.liveLink}" target="_blank">View Live Project ↗</a>
+            ${d.demoVideo ? `<button class="btn btn-ghost" onclick="watchDemo()">▶ Watch Demo</button>` : ''}
+          </div>
         </div>
       </div>
+      ${d.demoVideo ? `
+        <div class="detail-card demo-card" id="demo-section">
+          <h3>Demo</h3>
+          <video id="demo-video" class="demo-video" src="${d.demoVideo}" controls preload="metadata" playsinline></video>
+        </div>` : ''}
       <div class="detail-grid">
         <div class="detail-card"><h3>Problem</h3><p>${d.problem}</p></div>
         <div class="detail-card"><h3>Solution</h3><p>${d.solution}</p></div>
@@ -284,6 +264,15 @@ function showDetail(id) {
   document.getElementById('portfolio-view').style.display = 'none';
   document.getElementById('detail-view').style.display   = 'block';
   window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+
+function watchDemo() {
+  const section = document.getElementById('demo-section');
+  const video   = document.getElementById('demo-video');
+  if (!section || !video) return;
+  section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  video.play().catch(() => {});
 }
 
 
