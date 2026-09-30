@@ -1,6 +1,6 @@
 // ============================================================
 // PROJECT DATA
-// Listed oldest → newest; the slider shows the latest first.
+// Listed oldest → newest; the slider shows th iygy8gyg8ye latest first.
 // ================================================= erw===========
  
 const projects = [
