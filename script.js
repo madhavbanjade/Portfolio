@@ -104,6 +104,7 @@ const projects = [
       extraTags: ['Groq', 'Jina', 'Vector Search', 'JWT', 'Render', 'Node.js'],
       longDesc: 'DocuMind is a document Q&A application built on a retrieval-augmented generation pipeline. Users upload PDF, Word, and Excel files, which are parsed, split into overlapping chunks, embedded, and stored in a Qdrant vector database. When a question is asked, the most relevant chunks are retrieved and re-ranked with Jina, then passed to an LLM on Groq that answers strictly from that context and returns the source chunks it used. Includes JWT authentication, chat conversation history, and a lightweight vanilla JavaScript frontend.',
       liveLink: 'https://documindra.netlify.app/',
+      demoVideo: 'raagdemo.mp4',
       problem: 'Finding answers inside long PDFs, spreadsheets, and reports means manually searching through them, and general-purpose chatbots often invent answers that are not in the source material.',
       solution: 'Built an end-to-end RAG pipeline: document parsing, overlapping chunking, vector embeddings, semantic search in Qdrant, and re-ranking before generation. The model is instructed to answer only from retrieved context and to say so when nothing relevant is found, and each answer returns its source references. Deployed as a NestJS API on Render.',
       stack: ['NestJS', 'TypeScript', 'MongoDB', 'Qdrant', 'Groq', 'Jina Reranker', 'JWT Authentication', 'Render'],
