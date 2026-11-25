@@ -84,7 +84,7 @@ const allProjects = [
   },
   {
     id: 'fanout',
-    kind: 'System design',
+    kind: 'Personal project',
     title: 'Fanout',
     image: 'fanout-cover.png',
     video: 'fanout.mp4',
@@ -100,7 +100,7 @@ const allProjects = [
   },
   {
     id: 'documind',
-    kind: 'AI product',
+    kind: 'Personal project',
     title: 'DocuMind',
     image: 'Raag-cover.png',
     video: 'raagdemo.mp4',

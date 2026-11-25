@@ -767,3 +767,18 @@ body.locked .wa { opacity: 0; pointer-events: none; }
 a.wa-float { position: fixed; right: 22px; bottom: 22px; z-index: 150; }
 body.locked a.wa-float { opacity: 0; pointer-events: none; }
 @media (max-width: 600px) { a.wa-float { right: 14px; bottom: 14px; } }
+
+/* Mobile: centered content */
+@media (max-width: 700px) {
+  .section-head, .section-lead { margin-left: auto; margin-right: auto; text-align: center; }
+  .eyebrow { justify-content: center; }
+  .pc-body, .tile, .tile-intro { text-align: center; align-items: center; }
+  .tile-intro { flex-direction: column; }
+  .tile-photo { width: 62%; max-width: 260px; }
+  .tile-film, .tile-intro .btn { align-self: center; }
+  .tool-groups > div { text-align: center; }
+  .tool-groups .logo-row, .pc-body .logo-row { justify-content: center; }
+  .contact { text-align: center; }
+  .contact-actions, .contact-social { justify-content: center; }
+  .footer { justify-content: center; text-align: center; }
+}
