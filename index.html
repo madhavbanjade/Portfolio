@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Inter:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <script>document.documentElement.classList.add('js');</script>
 </head>
@@ -24,10 +24,7 @@
 
   <!-- ============ NAV ============ -->
   <header class="nav" id="nav">
-    <a class="nav-logo" href="#top" aria-label="Back to top">
-      <span class="logo-mark" aria-hidden="true">M</span>
-      <span class="logo-text">Madhav Banjade</span>
-    </a>
+    <a class="btn btn-small btn-primary nav-talk" href="#contact">Let's talk</a>
 
     <nav class="nav-links" id="navLinks" aria-label="Primary">
       <a href="#work" data-nav>Work</a>
@@ -43,7 +40,6 @@
         <a href="https://www.instagram.com/devb.ychance/" target="_blank" rel="noopener noreferrer"><span class="logo" data-tech="instagram"></span></a>
         <a href="https://wa.me/9779749344926" target="_blank" rel="noopener noreferrer"><span class="logo" data-tech="whatsapp"></span></a>
       </div>
-      <a class="btn btn-small btn-primary" href="#contact">Let's talk</a>
       <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span></button>
     </div>
   </header>
@@ -103,7 +99,6 @@
     <!-- ============ WORK (2-column grid) ============ -->
     <section class="section" id="work">
       <div class="section-head">
-        <span class="eyebrow reveal">Selected work</span>
         <h2 class="section-title mask"><span>Real projects,<br />live and ready to open.</span></h2>
       </div>
       <div class="work-grid" id="workGrid"><!-- rendered by script.js --></div>
@@ -112,7 +107,6 @@
     <!-- ============ EXPERIENCE ============ -->
     <section class="section" id="experience">
       <div class="section-head">
-        <span class="eyebrow reveal">Experience</span>
         <h2 class="section-title mask"><span>Where I've been building.</span></h2>
       </div>
 
@@ -161,7 +155,6 @@
     <!-- ============ ABOUT ============ -->
     <section class="section" id="about">
       <div class="section-head">
-        <span class="eyebrow reveal">About</span>
         <h2 class="section-title mask"><span>Curious by nature.<br />Engineer by craft.</span></h2>
       </div>
 
@@ -210,8 +203,7 @@
 
     <!-- ============ CONTACT ============ -->
     <section class="contact" id="contact">
-      <span class="eyebrow reveal">Contact</span>
-      <h2 class="contact-title mask"><span>Have an idea?<br /><span class="accent-word">Let's make it real.</span></span></h2>
+      <h2 class="contact-title mask"><span>Have an idea?<br /><span class="accent-word squig-wrap">Let's make it real.<svg class="squig" viewBox="0 0 400 18" preserveAspectRatio="none" aria-hidden="true"><path d="M3 11 C 30 2, 55 17, 85 9 S 140 2, 170 10 S 230 17, 262 8 S 330 3, 360 10 S 390 12, 397 7" pathLength="1"/></svg></span></span></h2>
 
       <div class="contact-actions reveal">
         <button class="copy-email" id="copyEmail" data-email="madhavbnzd57@gmail.com">
@@ -219,10 +211,10 @@
           <span class="copy-hint" id="copyHint">Copy</span>
         </button>
         <div class="social-icons contact-social">
-          <a href="https://www.linkedin.com/in/madhavbanjade/" target="_blank" rel="noopener noreferrer"><span class="logo" data-tech="linkedin"></span></a>
-          <a href="https://github.com/madhavbanjade" target="_blank" rel="noopener noreferrer"><span class="logo" data-tech="github"></span></a>
-          <a href="https://www.instagram.com/devb.ychance/" target="_blank" rel="noopener noreferrer"><span class="logo" data-tech="instagram"></span></a>
-        <a href="https://wa.me/9779749344926" target="_blank" rel="noopener noreferrer"><span class="logo" data-tech="whatsapp"></span></a>
+          <a href="https://www.linkedin.com/in/madhavbanjade/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><span class="logo" data-tech="linkedin"></span></a>
+          <a href="https://github.com/madhavbanjade" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><span class="logo" data-tech="github"></span></a>
+          <a href="https://www.instagram.com/devb.ychance/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><span class="logo" data-tech="instagram"></span></a>
+          <a href="https://wa.me/9779749344926" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><span class="logo" data-tech="whatsapp"></span></a>
         </div>
         <a class="btn btn-ghost" href="MadhavBanjade.pdf" download="Madhav-Banjade-CV.pdf">Download CV ↓</a>
       </div>
@@ -234,7 +226,7 @@
     <a href="#top" class="to-top">Back to top ↑</a>
   </footer>
 
-  <a class="wa-float" href="https://wa.me/9779749344926" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp"><span class="logo" data-tech="whatsapp"></span></a>
+  <a class="wa-float" href="https://wa.me/9779749344926" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp"><span class="logo" data-tech="whatsapp"></span><span class="wa-label">Chat with me</span></a>
 
   <!-- ============ "HOW I WORK" VIDEO POP-UP ============ -->
   <div class="modal" id="filmModal" role="dialog" aria-modal="true" aria-label="Video: how I work with clients" hidden>

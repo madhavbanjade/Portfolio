@@ -20,8 +20,8 @@
   --ok: #141210;              /* neutral ink for status dots and checks */
   --shadow: 0 24px 48px -28px rgba(20, 18, 16, 0.25);
 
-  --display: 'Bricolage Grotesque', 'Geist', ui-sans-serif, system-ui, sans-serif;
-  --sans: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --display: 'Architects Daughter', 'Comic Sans MS', cursive;
+  --sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --mono: 'Geist Mono', ui-monospace, Consolas, monospace;
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -69,10 +69,10 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   background-color: currentColor;
   -webkit-mask: var(--icon) center / contain no-repeat;
   mask: var(--icon) center / contain no-repeat;
-  color: var(--text-2);
+  color: var(--brand, var(--text-2));
   transition: color 0.3s, transform 0.4s var(--ease-out);
 }
-.logo:hover { color: var(--brand, var(--text)); transform: translateY(-2px) scale(1.08); }
+.logo:hover { transform: translateY(-2px) scale(1.08); }
 .logo-row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
 .logo-row.lg { --s: 28px; gap: 18px; }
 
@@ -217,11 +217,11 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   transition: border-color 0.3s, transform 0.4s var(--ease-out), background 0.3s;
 }
 .social-icons a:hover { border-color: var(--text); transform: translateY(-3px); }
-.social-icons .logo { --s: 19px; color: var(--text); }
+.social-icons .logo { --s: 19px; color: var(--brand, var(--text)); }
 .social-icons a:hover .logo { transform: none; }
 .nav-social { gap: 4px; }
 .nav-social a { width: 38px; height: 38px; border-radius: 10px; border-color: transparent; background: transparent; }
-.nav-social .logo { --s: 17px; color: var(--text-2); }
+.nav-social .logo { --s: 17px; color: var(--brand, var(--text-2)); }
 .mm-social { justify-content: flex-start; margin-top: 28px; }
 .mobile-menu .mm-social a { width: 48px; height: 48px; font-size: 1rem; }
 
@@ -238,7 +238,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .logo-band { padding: 34px 0; border-block: 1px solid var(--border); background: var(--bg-2); overflow: hidden; }
 .marquee { display: flex; overflow: hidden; user-select: none; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
 .marquee-track { display: flex; align-items: center; gap: clamp(40px, 6vw, 80px); padding-right: clamp(40px, 6vw, 80px); flex: none; animation: marquee 45s linear infinite; }
-.marquee-track .logo { --s: clamp(30px, 3.4vw, 42px); color: var(--text-3); }
+.marquee-track .logo { --s: clamp(30px, 3.4vw, 42px); color: var(--brand, var(--text-3)); }
 .marquee:hover .marquee-track { animation-play-state: paused; }
 @keyframes marquee { to { transform: translateX(-100%); } }
 
@@ -782,3 +782,82 @@ body.locked a.wa-float { opacity: 0; pointer-events: none; }
   .contact-actions, .contact-social { justify-content: center; }
   .footer { justify-content: center; text-align: center; }
 }
+
+/* Architects Daughter has one weight and is loose by nature: no faux-bold, no tight tracking */
+.hero-title, .section-title, .contact-title, .case-title, .pc-title, .tl-card h3, .modal-head h3,
+.tile-intro .big, .stat-num, .pc-outcome b, .case-outcome b, .case-nav b, .endcard p, .mobile-menu a, .stamp {
+  font-weight: 400; letter-spacing: 0;
+}
+.hero-title, .section-title, .contact-title, .case-title { line-height: 1.12; }
+
+/* Nav items in the heading font */
+.nav-links a, .nav-talk { font-family: var(--display); font-weight: 400; letter-spacing: 0; }
+.nav-links a { font-size: 1rem; }
+
+/* Sticky nav: always visible */
+.nav.hide { transform: translateX(-50%); }
+
+/* Section underline that fills as you scroll */
+.sec-line { height: 3px; width: 100%; max-width: 920px; margin: clamp(-24px, -3vw, -16px) 0 clamp(36px, 5vw, 56px); border-radius: 3px; background: var(--border); overflow: hidden; }
+.sec-line span { display: block; height: 100%; background: #e11d2e; transform: scaleX(0); transform-origin: 0 50%; }
+.contact .sec-line { margin: 0 0 clamp(36px, 5vw, 56px); }
+@media (max-width: 700px) { .sec-line { margin-left: auto; margin-right: auto; } }
+
+/* Nav: underline that fills while scrolling (no button look) */
+.nav-indicator { display: none; }
+.nav-links a { padding: 8px 12px 10px; border-radius: 0; background: none; }
+.nav-links a::after {
+  content: ''; position: absolute; left: 12px; right: 12px; bottom: 2px; height: 2px; border-radius: 2px;
+  background: #e11d2e; transform: scaleX(var(--p, 0)); transform-origin: 0 50%;
+}
+.nav-links a.active { color: var(--text); }
+
+/* Contact: big heading + one row, light */
+.contact .contact-title { font-size: clamp(2.8rem, 8vw, 7rem); line-height: 1; padding-bottom: 0.3em; margin-bottom: clamp(24px, 4vw, 48px); }
+.contact .sec-line { display: none; }
+.squig-wrap { position: relative; display: inline-block; }
+.squig { position: absolute; left: 0; bottom: -0.12em; width: 100%; height: 0.2em; overflow: visible; }
+.squig path { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.4s var(--ease-out) 0.7s; vector-effect: non-scaling-stroke; }
+.mask.in .squig path { stroke-dashoffset: 0; }
+
+.contact-actions { gap: 16px; padding-top: clamp(24px, 3vw, 36px); border-top: 1px solid var(--border-strong); }
+.contact-actions .copy-email { padding: 16px 22px; border-radius: 16px; transition: transform 0.4s var(--ease-out), border-color 0.3s, box-shadow 0.4s; }
+.contact-actions .copy-email:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: 0 18px 30px -18px var(--accent); }
+.contact-actions .social-icons a { width: 54px; height: 54px; border-radius: 16px; }
+.contact-actions .social-icons .logo { --s: 22px; }
+.contact-actions .social-icons a:hover { box-shadow: 0 16px 26px -16px rgba(20, 18, 16, 0.45); }
+.contact-actions .btn-ghost { padding: 17px 24px; border-radius: 16px; font-family: var(--display); font-size: 1.05rem; transition: transform 0.4s var(--ease-out), background 0.3s, color 0.3s; }
+.contact-actions .btn-ghost:hover { transform: translateY(-3px); background: var(--text); color: var(--bg); }
+
+/* Contact row: start / middle / end, equally spaced */
+.contact-actions { justify-content: space-between; }
+.contact .contact-social { justify-content: center; }
+@media (max-width: 700px) { .contact-actions { justify-content: center; } }
+.squig { display: none; }
+
+/* Animated WhatsApp button */
+a.wa-float {
+  animation: waIn 0.8s var(--ease-out) 1s both, waBob 3.4s ease-in-out 2s infinite;
+}
+a.wa-float:hover { animation-play-state: running, paused; transform: scale(1.08); }
+a.wa-float::before { animation: waPulse 2.4s ease-out infinite; }
+a.wa-float::after {
+  content: ''; position: absolute; inset: 0; border-radius: 50%; border: 2px solid #25d366; pointer-events: none;
+  animation: waPulse 2.4s ease-out 1.2s infinite;
+}
+a.wa-float .logo { animation: waRing 4.5s ease-in-out 3s infinite; transform-origin: 50% 60%; }
+.wa-label {
+  position: absolute; right: calc(100% + 12px); top: 50%; transform: translate(10px, -50%); opacity: 0; pointer-events: none;
+  padding: 8px 14px; border-radius: 999px; background: #fff; color: #111b21; white-space: nowrap;
+  font-family: var(--display); font-size: 0.95rem; box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.06);
+  transition: opacity 0.3s, transform 0.4s var(--ease-out);
+}
+a.wa-float:hover .wa-label, a.wa-float:focus-visible .wa-label { opacity: 1; transform: translate(0, -50%); }
+@keyframes waBob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -7px; } }
+@keyframes waRing {
+  0%, 70%, 100% { transform: rotate(0); }
+  74% { transform: rotate(-16deg); } 78% { transform: rotate(14deg); } 82% { transform: rotate(-12deg); }
+  86% { transform: rotate(10deg); } 90% { transform: rotate(-6deg); } 94% { transform: rotate(0); }
+}
+@media (hover: none) { .wa-label { display: none; } }
+@media (prefers-reduced-motion: reduce) { a.wa-float, a.wa-float::before, a.wa-float::after, a.wa-float .logo { animation: none; } }

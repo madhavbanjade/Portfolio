@@ -4,17 +4,17 @@
 // ============================================================
 const ICON_CDN = 'https://cdn.jsdelivr.net/npm/simple-icons@13/icons/';
 const TECH = {
-  nextjs:     ['nextdotjs', 'Next.js', null],
+  nextjs:     ['nextdotjs', 'Next.js', '#000000'],
   react:      ['react', 'React', '#61DAFB'],
   typescript: ['typescript', 'TypeScript', '#3178C6'],
   nestjs:     ['nestjs', 'NestJS', '#E0234E'],
   node:       ['nodedotjs', 'Node.js', '#5FA04E'],
-  express:    ['express', 'Express', null],
+  express:    ['express', 'Express', '#000000'],
   mongodb:    ['mongodb', 'MongoDB', '#47A248'],
   postgres:   ['postgresql', 'PostgreSQL', '#4169E1'],
   redis:      ['redis', 'Redis', '#FF4438'],
-  prisma:     ['prisma', 'Prisma', null],
-  socketio:   ['socketdotio', 'Socket.IO', null],
+  prisma:     ['prisma', 'Prisma', '#2D3748'],
+  socketio:   ['socketdotio', 'Socket.IO', '#010101'],
   docker:     ['docker', 'Docker', '#2496ED'],
   nginx:      ['nginx', 'Nginx', '#009639'],
   tailwind:   ['tailwindcss', 'Tailwind CSS', '#06B6D4'],
@@ -24,19 +24,19 @@ const TECH = {
   redux:      ['redux', 'Redux', '#764ABC'],
   framer:     ['framer', 'Framer Motion', '#0055FF'],
   puppeteer:  ['puppeteer', 'Puppeteer', '#40B5A4'],
-  handlebars: ['handlebarsdotjs', 'Handlebars', null],
+  handlebars: ['handlebarsdotjs', 'Handlebars', '#F0772B'],
   cloudinary: ['cloudinary', 'Cloudinary', '#3448C5'],
-  jwt:        ['jsonwebtokens', 'JSON Web Tokens', null],
-  render:     ['render', 'Render', null],
+  jwt:        ['jsonwebtokens', 'JSON Web Tokens', '#D63AFF'],
+  render:     ['render', 'Render', '#000000'],
   git:        ['git', 'Git', '#F05032'],
-  github:     ['github', 'GitHub', null],
+  github:     ['github', 'GitHub', '#181717'],
   postman:    ['postman', 'Postman', '#FF6C37'],
   figma:      ['figma', 'Figma', '#F24E1E'],
   aws:        ['amazonwebservices', 'AWS', '#FF9900'],
-  linkedin:   ['linkedin', 'LinkedIn', null],
-  instagram:  ['instagram', 'Instagram', null],
-  gmail:      ['gmail', 'Email', null],
-  whatsapp:   ['whatsapp', 'WhatsApp', null],
+  linkedin:   ['linkedin', 'LinkedIn', '#0A66C2'],
+  instagram:  ['instagram', 'Instagram', '#E4405F'],
+  gmail:      ['gmail', 'Email', '#EA4335'],
+  whatsapp:   ['whatsapp', 'WhatsApp', '#25D366'],
 };
 
 function logoAttrs(key) {
@@ -87,7 +87,6 @@ const allProjects = [
     kind: 'Personal project',
     title: 'Fanout',
     image: 'fanout-cover.png',
-    video: 'fanout.mp4',
     year: '2026',
     tech: ['nestjs', 'nextjs', 'nginx', 'redis', 'socketio', 'postgres', 'prisma', 'docker'],
     desc: 'A real-time notification platform built to prove out load balancing and horizontal scaling under real traffic, not just to send notifications.',
@@ -103,7 +102,6 @@ const allProjects = [
     kind: 'Personal project',
     title: 'DocuMind',
     image: 'Raag-cover.png',
-    video: 'raagdemo.mp4',
     year: '2026',
     tech: ['nestjs', 'typescript', 'mongodb', 'jwt', 'render'],
     desc: 'Upload PDFs, Word or Excel files and ask questions about them. Every answer comes only from your documents, with sources attached.',
@@ -202,8 +200,6 @@ function renderWork() {
     <article class="pcard" style="transition-delay:${(i % 2) * 0.12}s">
       <div class="pc-media${p.contain ? ' contain' : ''}" data-open="${p.id}">
         <img src="${p.image}" alt="${p.title} preview" loading="lazy" />
-        ${p.video ? `<video src="${p.video}" poster="${p.image}" muted loop playsinline preload="none"></video>
-                     <span class="pc-badge"><span class="live-dot"></span>Demo</span>` : ''}
       </div>
       <div class="pc-body">
         <div class="pc-top"><span class="pc-kind">${p.kind}</span><span>${p.year}</span></div>
@@ -217,14 +213,6 @@ function renderWork() {
         </div>
       </div>
     </article>`).join('');
-
-  // demo videos play while their card is on screen
-  const io = new IntersectionObserver(entries => entries.forEach(e => {
-    const v = $('video', e.target);
-    if (e.isIntersecting && !reduceMotion) v.play().then(() => e.target.classList.add('playing')).catch(() => {});
-    else { v.pause(); e.target.classList.remove('playing'); }
-  }), { threshold: 0.5 });
-  $$('.pc-media').filter(m => $('video', m)).forEach(m => io.observe(m));
 }
 
 
@@ -364,7 +352,16 @@ function initScroll() {
   const links = $$('[data-nav]');
   const indicator = $('#navIndicator');
   const sections = links.map(a => $(a.getAttribute('href')));
-  let lastY = scrollY, ticking = false;
+  let ticking = false;
+
+  // red underline under each section heading, filled as you scroll
+  const secLines = $$('.section-head, .contact-title').map(el => {
+    const line = document.createElement('div');
+    line.className = 'sec-line';
+    line.innerHTML = '<span></span>';
+    el.after(line);
+    return line;
+  });
 
   function update() {
     ticking = false;
@@ -372,19 +369,24 @@ function initScroll() {
     const max = document.documentElement.scrollHeight - innerHeight;
     progress.style.transform = `scaleX(${max > 0 ? y / max : 0})`;
     nav.classList.toggle('scrolled', y > 20);
-    nav.classList.toggle('hide', y > lastY + 2 && y > 600 && !document.body.classList.contains('locked'));
-    if (y < lastY - 2) nav.classList.remove('hide');
-    lastY = y;
 
     let active = null;
     sections.forEach((s, i) => { if (s && s.getBoundingClientRect().top < innerHeight * 0.4) active = links[i]; });
     if ($('#contact').getBoundingClientRect().top < innerHeight * 0.5) active = null;
     links.forEach(a => a.classList.toggle('active', a === active));
-    if (active) {
-      indicator.style.opacity = 1;
-      indicator.style.width = active.offsetWidth + 'px';
-      indicator.style.transform = `translateX(${active.offsetLeft}px)`;
-    } else indicator.style.opacity = 0;
+    // each nav link's underline fills with the scroll progress through its section
+    sections.forEach((sec, i) => {
+      if (!sec) return;
+      const r0 = sec.getBoundingClientRect();
+      const p = Math.min(Math.max((innerHeight * 0.4 - r0.top) / r0.height, 0), 1);
+      links[i].style.setProperty('--p', p);
+    });
+
+    secLines.forEach(l => {
+      const t = l.getBoundingClientRect().top;
+      const p = Math.min(Math.max((innerHeight * 0.9 - t) / (innerHeight * 0.45), 0), 1);
+      l.firstChild.style.transform = `scaleX(${p})`;
+    });
 
     const r = timeline.getBoundingClientRect();
     fill.style.transform = `scaleY(${Math.min(Math.max((innerHeight * 0.6 - r.top) / r.height, 0), 1)})`;
@@ -450,7 +452,6 @@ function caseHTML(p) {
         <a class="btn btn-primary" href="${p.live}" target="_blank" rel="noopener noreferrer"><span>Visit ${host(p.live)}</span><span class="arrow">↗</span></a>
         <div class="logo-row">${p.tech.map(logo).join('')}</div>
       </div>
-      ${p.video ? `<div class="case-video"><video src="${p.video}" poster="${p.image}" controls playsinline preload="metadata"></video></div>` : ''}
       <div>
         <div class="case-grid">
           <div class="case-block"><h4>The problem</h4><p>${p.problem}</p></div>
