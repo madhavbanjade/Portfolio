@@ -229,24 +229,6 @@ function renderWork() {
 
 
 // ============================================================
-// SYSTEMS: retrieval pipeline stepper
-// ============================================================
-function initPipeline() {
-  const steps = $$('#pipeline li');
-  let i = 0, timer = null;
-  const step = () => {
-    steps.forEach((s, j) => { s.classList.toggle('active', j === i); s.classList.toggle('done', j < i); });
-    i = (i + 1) % (steps.length + 1);
-  };
-  new IntersectionObserver(([e]) => {
-    if (e.isIntersecting && !timer) { step(); timer = setInterval(step, 900); }
-    if (!e.isIntersecting && timer) { clearInterval(timer); timer = null; }
-  }, { threshold: 0.3 }).observe($('#pipeline'));
-  if (reduceMotion) $$('.diagram svg').forEach(svg => svg.pauseAnimations && svg.pauseAnimations());
-}
-
-
-// ============================================================
 // FILM: "How I work", a scripted animation with real video controls.
 // Each .scene lasts SCENE seconds. Elements with data-at="a,b,..."
 // receive classes s1, s2, ... once the scene clock passes each time.
@@ -533,57 +515,6 @@ function initCase() {
 
 
 // ============================================================
-// WHATSAPP CHAT POP-UP
-// ============================================================
-function initWhatsApp() {
-  const wa = $('#wa');
-  const card = $('#waCard');
-  const toggle = $('#waToggle');
-  const teaser = $('#waTeaser');
-  const text = $('#waText');
-  const phone = wa.dataset.phone;
-
-  function open() {
-    teaser.hidden = true;
-    sessionStorage.setItem('waSeen', '1');
-    card.hidden = false;
-    $('#waTime').textContent = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit' }).format(new Date());
-    requestAnimationFrame(() => requestAnimationFrame(() => wa.classList.add('open')));
-    toggle.setAttribute('aria-expanded', 'true');
-    toggle.setAttribute('aria-label', 'Close WhatsApp chat');
-    setTimeout(() => text.focus({ preventScroll: true }), 350);
-  }
-  function close() {
-    wa.classList.remove('open');
-    toggle.setAttribute('aria-expanded', 'false');
-    toggle.setAttribute('aria-label', 'Open WhatsApp chat');
-    setTimeout(() => { if (!wa.classList.contains('open')) card.hidden = true; }, 350);
-  }
-
-  toggle.addEventListener('click', () => (wa.classList.contains('open') ? close() : open()));
-  teaser.addEventListener('click', open);
-  $('#waClose').addEventListener('click', close);
-  document.addEventListener('keydown', e => { if (e.key === 'Escape' && wa.classList.contains('open')) close(); });
-  document.addEventListener('click', e => { if (wa.classList.contains('open') && !wa.contains(e.target)) close(); });
-
-  $('#waForm').addEventListener('submit', e => {
-    e.preventDefault();
-    const msg = text.value.trim() || 'Hi Madhav!';
-    window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');
-  });
-  text.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('#waForm').requestSubmit(); }
-  });
-
-  // gentle one-time teaser per visit
-  if (!sessionStorage.getItem('waSeen')) {
-    setTimeout(() => { if (!wa.classList.contains('open')) teaser.hidden = false; }, 6000);
-    setTimeout(() => { teaser.hidden = true; }, 18000);
-  }
-}
-
-
-// ============================================================
 // INIT
 // ============================================================
 $('#year').textContent = new Date().getFullYear();
@@ -596,8 +527,6 @@ initMenu();
 initCopy();
 initReveal();
 initCounters();
-initPipeline();
 initFilm();
 initScroll();
 initCase();
-initWhatsApp();

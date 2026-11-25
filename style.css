@@ -178,13 +178,6 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   display: grid; place-items: center; text-align: center;
   padding: 120px var(--pad) 96px;
 }
-.hero-grid {
-  position: absolute; inset: 0; pointer-events: none;
-  background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
-  background-size: 64px 64px; background-position: center;
-  mask-image: radial-gradient(ellipse 60% 55% at 50% 50%, #000 20%, transparent 75%);
-  -webkit-mask-image: radial-gradient(ellipse 60% 55% at 50% 50%, #000 20%, transparent 75%);
-}
 .hero-inner { position: relative; max-width: 1100px; display: flex; flex-direction: column; align-items: center; }
 .hero-badge {
   display: inline-flex; align-items: center; gap: 10px; margin-bottom: 32px;
@@ -769,3 +762,8 @@ body.locked .wa { opacity: 0; pointer-events: none; }
 @keyframes waMsg { to { opacity: 1; transform: none; } }
 @media (max-width: 600px) { .wa { right: 14px; bottom: 14px; } .wa-float { width: 56px; height: 56px; } }
 @media (prefers-reduced-motion: reduce) { .wa-float, .wa-float::before, .wa-teaser { animation: none; } .wa-msg { opacity: 1; transform: none; } }
+
+/* WhatsApp: direct link, floating bottom-right */
+a.wa-float { position: fixed; right: 22px; bottom: 22px; z-index: 150; }
+body.locked a.wa-float { opacity: 0; pointer-events: none; }
+@media (max-width: 600px) { a.wa-float { right: 14px; bottom: 14px; } }
